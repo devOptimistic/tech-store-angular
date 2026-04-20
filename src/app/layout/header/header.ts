@@ -10,6 +10,6 @@ import { RouterLink } from '@angular/router';
 export class Header {
   navList = [
     { title: 'Home', link: '', active: false },
-    { title: 'Products', link: '/products', active: false }
+    { title: 'Products', link: '/products/all', active: false }
   ]
 }
