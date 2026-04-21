@@ -21,5 +21,9 @@ export const routes: Routes = [
     {
         path: 'product/:id',
         loadComponent: () => import('../app/pages/product-details/product-details')
-    }
+    },
+    {
+        path: 'wishlist',
+        loadComponent: () => import('../app/pages/wishlist/wishlist')
+    },
 ];

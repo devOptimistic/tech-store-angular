@@ -1,5 +1,4 @@
 import { Component, computed, input, signal } from '@angular/core';
-import { sampleProducts } from '../products-grid/products-sample';
 import { Product } from '../../models/product/product';
 
 @Component({
@@ -21,10 +20,11 @@ export default class ProductDetails {
     reviewCount: 0,
     inStock: false,
     category: '',
+    brand: '',
     moreProperties: []
   });
   getProduct(){
-    let p = sampleProducts.find(p=> p.id == this.id);
-    this.product.set(p)
+    // let p = PRODUCTS.find(p=> p.id == this.id);
+    // this.product.set(p)
   }
 }

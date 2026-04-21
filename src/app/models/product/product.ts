@@ -9,6 +9,7 @@ export type Product = {
   reviewCount: number,
   inStock: boolean,
   category: string,
+  brand: string,
   moreProperties: ProductProperty[]
 }
 

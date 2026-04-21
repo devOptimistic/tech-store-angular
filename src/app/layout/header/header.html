@@ -1,55 +1,78 @@
 <header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
-      <div class="mx-auto max-w-7xl px-4 lg:px-8">
-        <div class="flex h-16 items-center justify-between gap-3 sm:h-18">
-          <a href="#" class="flex min-w-0 items-center gap-3">
-            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-black text-white shadow-soft">TR</div>
-            <div class="min-w-0">
-              <p class="truncate text-base font-black tracking-tight text-slate-900">Tech Role</p>
-              <p class="truncate text-[11px] text-slate-500">Digital Store</p>
-            </div>
-          </a>
+  <div class="mx-auto max-w-7xl px-4 lg:px-8">
+    <div class="flex h-16 items-center justify-between gap-3 sm:h-18">
+      <a href="#" class="flex min-w-0 items-center gap-3">
+        <div
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-black text-white shadow-soft">
+          TR</div>
+        <div class="min-w-0">
+          <p class="truncate text-base font-black tracking-tight text-slate-900">Tech Role</p>
+          <p class="truncate text-[11px] text-slate-500">Digital Store</p>
+        </div>
+      </a>
 
-          <nav class="hidden items-center gap-6 text-sm font-medium text-slate-600 lg:flex">
-            @for(item of navList;track item.title){
-                <a [routerLink]="item.link" class="transition hover:text-blue-600">{{item.title}}</a>
-            }
-            <!-- <a href="#home" class="transition hover:text-blue-600">Home</a>
+      <nav class="hidden items-center gap-6 text-sm font-medium text-slate-600 lg:flex">
+        @for(item of navList;track item.title){
+        <a [routerLink]="item.link" class="transition hover:text-blue-600">{{item.title}}</a>
+        }
+        <!-- <a href="#home" class="transition hover:text-blue-600">Home</a>
             <a href="#categories" class="transition hover:text-blue-600">Categories</a>
             <a href="#featured" class="transition hover:text-blue-600">Featured</a>
             <a href="#deals" class="transition hover:text-blue-600">Deals</a>
             <a href="#brands" class="transition hover:text-blue-600">Brands</a>
             <a href="#reviews" class="transition hover:text-blue-600">Reviews</a> -->
-          </nav>
+      </nav>
 
-          <div class="hidden flex-1 px-4 lg:block xl:px-8">
-            <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 transition focus-within:border-blue-300 focus-within:bg-white focus-within:shadow-soft">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
-              </svg>
-              <input type="text" placeholder="Search laptops, phones, headphones..." class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 sm:gap-3">
-            <button class="hidden rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">Sign In</button>
-            <!-- <button class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
-              <span class="text-lg">♡</span>
-            </button> -->
-            <button class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800" routerLink="/cart">
-              <span class="text-lg">🛒</span>
-              <span class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold">2</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 pb-3 lg:hidden">
-          <div class="flex flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
-            </svg>
-            <input type="text" placeholder="Search products..." class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
-          </div>
-          <button class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 lg:hidden">☰</button>
+      <div class="hidden flex-1 px-4 lg:block xl:px-8">
+        <div
+          class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 transition focus-within:border-blue-300 focus-within:bg-white focus-within:shadow-soft">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+              d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
+          </svg>
+          <input type="text" placeholder="Search laptops, phones, headphones..."
+            class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
         </div>
       </div>
-    </header>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button
+          class="hidden rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">Sign
+          In</button>
+
+        <button
+          routerLink="/wishlist"
+          class="cursor-pointer relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
+          <span class="text-lg">♡</span>
+          @if(store.wishlistItemsCount() > 0){
+          <span
+            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">{{store.wishlistItemsCount()}}</span>
+          }
+        </button>
+
+        <button
+          class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800"
+          routerLink="/cart">
+          <span class="text-lg">🛒</span>
+          <span
+            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold">2</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 pb-3 lg:hidden">
+      <div class="flex flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+            d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
+        </svg>
+        <input type="text" placeholder="Search products..."
+          class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
+      </div>
+      <button
+        class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 lg:hidden">☰</button>
+    </div>
+  </div>
+</header>

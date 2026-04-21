@@ -1,0 +1,54 @@
+<div class="mx-auto max-w-7xl px-4 py-8 lg:px-8 lg:py-12">
+
+    <!-- Empty Wishlist State (Hidden by default, shown when no items) -->
+    @if(store.wishlistItemsCount() == 0){
+    <div class="text-center py-16">
+        <div class="text-7xl mb-4">💔</div>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Your wishlist is empty</h3>
+        <p class="text-slate-500 mb-6">Save your favorite items here to buy them later</p>
+        <a routerLink="/products/all"
+            class="cursor-pointer inline-block rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 text-sm font-semibold text-white transition hover:from-blue-700 hover:to-cyan-600">
+            Continue Shopping
+        </a>
+    </div>
+    } @else {
+    <!-- Page Title -->
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="text-3xl">❤️</span>
+                <h1 class="text-2xl font-black text-slate-900">My Wishlist</h1>
+            </div>
+            <p class="text-sm text-slate-500 mt-1">Products you've saved for later</p>
+        </div>
+        <div class="text-sm text-slate-500 bg-white px-4 py-2 rounded-xl border border-slate-200">
+            <span class="font-bold text-slate-900">{{store.wishlistItemsCount()}}</span> items in wishlist
+        </div>
+    </div>
+    <!-- Wishlist Grid -->
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @for (product of store.wishlistItems(); track product.id) {
+        <app-product-card [product]="product"></app-product-card>
+        }
+    </div>
+    }
+
+
+    <!-- Move to Cart / Share Wishlist Actions -->
+    <div class="mt-10 flex flex-wrap justify-between gap-4 border-t border-slate-200 pt-8">
+        <div class="flex gap-3">
+            <button
+                class="cursor-pointer rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                📋 Share Wishlist
+            </button>
+            <button
+                class="cursor-pointer rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                🗑️ Clear All
+            </button>
+        </div>
+        <button
+            class="cursor-pointer rounded-xl bg-slate-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+            Add All to Cart
+        </button>
+    </div>
+</div>
