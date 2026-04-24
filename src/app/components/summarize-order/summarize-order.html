@@ -1,0 +1,64 @@
+<aside class="space-y-4 xl:sticky xl:top-24 xl:self-start">
+    <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-6">
+        <h2 class="text-xl font-black tracking-tight text-slate-950">Order Summary</h2>
+
+        <div class="mt-5 space-y-4 border-b border-slate-200 pb-5">
+            <div class="flex items-center justify-between gap-4 text-sm">
+                <span class="text-slate-500">Subtotal</span>
+                <span class="font-semibold text-slate-900">${{toFixed(subtotal())}}</span>
+            </div>
+            <div class="flex items-center justify-between gap-4 text-sm">
+                <span class="text-slate-500">Shipping</span>
+                <span class="font-semibold text-green-600">{{shipping() == 0? 'Free' : '$' + toFixed(shipping())}}</span>
+            </div>
+            <div class="flex items-center justify-between gap-4 text-sm">
+                <span class="text-slate-500">Discount</span>
+                <span class="font-semibold text-red-500">-${{toFixed(discount())}}</span>
+            </div>
+            <div class="flex items-center justify-between gap-4 text-sm">
+                <span class="text-slate-500">Tax</span>
+                <span class="font-semibold text-slate-900">${{toFixed(tax())}}</span>
+            </div>
+        </div>
+
+        <div class="mt-5 flex items-center justify-between gap-4">
+            <span class="text-base font-bold text-slate-900">Total</span>
+            <span class="text-3xl font-black text-blue-600">${{toFixed(total())}}</span>
+        </div>
+
+        <div class="mt-6 space-y-3">
+            <button
+                class="w-full rounded-2xl bg-blue-600 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-500">Proceed
+                to Checkout</button>
+            <button
+                class="w-full rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Continue
+                Shopping</button>
+        </div>
+
+        <div class="mt-6 grid gap-3">
+            <div class="rounded-2xl bg-slate-50 p-4">
+                <p class="text-sm font-bold text-slate-900">Secure Checkout</p>
+                <p class="mt-1 text-xs leading-6 text-slate-500">Your payment information is encrypted and
+                    protected.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-50 p-4">
+                <p class="text-sm font-bold text-slate-900">Fast Delivery</p>
+                <p class="mt-1 text-xs leading-6 text-slate-500">Orders are processed quickly with reliable
+                    shipping.</p>
+            </div>
+            <div class="rounded-2xl bg-slate-50 p-4">
+                <p class="text-sm font-bold text-slate-900">Easy Returns</p>
+                <p class="mt-1 text-xs leading-6 text-slate-500">Simple return process for eligible products.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-6">
+        <h2 class="text-xl font-black tracking-tight text-slate-950">Need Help?</h2>
+        <p class="mt-2 text-sm leading-7 text-slate-500">Our support team can help you with shipping, payment, and
+            product questions before checkout.</p>
+        <button
+            class="mt-5 w-full rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Contact
+            Support</button>
+    </div>
+</aside>

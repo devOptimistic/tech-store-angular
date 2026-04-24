@@ -41,8 +41,7 @@
           class="hidden rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">Sign
           In</button>
 
-        <button
-          routerLink="/wishlist"
+        <button routerLink="/wishlist"
           class="cursor-pointer relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
           <span class="text-lg">♡</span>
           @if(store.wishlistItemsCount() > 0){
@@ -52,11 +51,13 @@
         </button>
 
         <button
-          class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800"
+          class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800 cursor-pointer"
           routerLink="/cart">
           <span class="text-lg">🛒</span>
+          @if(store.cartItemsCount() > 0){
           <span
-            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold">2</span>
+            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold">{{store.cartItemsCount()}}</span>
+          }
         </button>
       </div>
     </div>

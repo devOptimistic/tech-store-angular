@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { Product } from '../../models/product/product';
+import { Product } from '../../models/product';
 import { TitleCasePipe } from '@angular/common';
 import { ProductCard } from "../../components/product-card/product-card";
 import { FormsModule } from '@angular/forms';
@@ -24,7 +24,6 @@ export default class ProductsGrid {
   private applyFilters(products: Product[]): Product[] {
     let result = [...products];
 
-    // زنجیره‌ای از فیلترها
     result = this.filterByMainCategory(result);
     result = this.filterBySelectedCategories(result);
     result = this.filterByMaxPrice(result);
@@ -35,7 +34,6 @@ export default class ProductsGrid {
 
   filteredProducts = computed(() => this.applyFilters(this.store.products()));
 
-  // هر فیلتر به صورت متد جداگانه
   private filterByMainCategory(products: Product[]): Product[] {
     if (this.category() === 'all') return products;
     return products.filter(

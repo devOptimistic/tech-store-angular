@@ -1,0 +1,15 @@
+<section class="mt-6 rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">Recommended</p>
+            <h2 class="mt-2 text-2xl font-black tracking-tight text-slate-950">You Might Also Like</h2>
+        </div>
+        <a routerLink="/products/all" class="text-sm font-semibold text-blue-600">Browse all</a>
+    </div>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        @for (product of randomProducts(); track $index) {
+            <app-product-card [product]="product" />
+        }
+    </div>
+</section>

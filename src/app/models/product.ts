@@ -10,6 +10,8 @@ export type Product = {
   inStock: boolean,
   category: string,
   brand: string,
+  color: string,
+  discount: number,
   moreProperties: ProductProperty[]
 }
 

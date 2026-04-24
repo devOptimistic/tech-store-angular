@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Cart } from './cart';
+import { QtySelector } from './qty-selector';
 
-describe('Cart', () => {
-  let component: Cart;
-  let fixture: ComponentFixture<Cart>;
+describe('QtySelector', () => {
+  let component: QtySelector;
+  let fixture: ComponentFixture<QtySelector>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cart]
+      imports: [QtySelector]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Cart);
+    fixture = TestBed.createComponent(QtySelector);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

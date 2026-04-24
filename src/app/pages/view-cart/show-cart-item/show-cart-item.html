@@ -1,0 +1,35 @@
+<article class="grid gap-4 py-5 sm:grid-cols-[100px_minmax(0,1fr)] lg:grid-cols-[110px_minmax(0,1fr)_160px]">
+    <div class="rounded-[24px] bg-slate-50 p-5 text-center text-5xl" [routerLink]="'/product/' + item().product.id">
+        <img [src]="item().product.imageUrls[0]"
+            alt="">
+    </div>
+    <div>
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div  [routerLink]="'/product/' + item().product.id">
+                <h3 class="text-lg font-bold text-slate-900">{{item().product.name}}</h3>
+                <p class="mt-1 text-sm text-slate-500">{{item().product.shortDescription}}</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    <!-- <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-600">In
+                        Stock</span> -->
+                    <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">{{item().product.category}}</span>
+                </div>
+            </div>
+            <button class="text-sm font-semibold text-red-500 transition hover:border-slate-300 hover:bg-slate-50 h-10 w-20 cursor-pointer" (click)="store.removeFromCart(item().product)">Remove</button>
+        </div>
+
+        <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <app-qty-selector [quantity]="item().quantity" (qtyUpdated)="store.setItemQuantity({productId: item().product.id, quantity: $event})"/>
+            
+            <div class="text-left sm:text-right">
+                @if(item().product.discount > 0){
+                    <p class="text-sm text-slate-400 line-through">${{item().product.price}}</p>
+                }
+                <p class="text-2xl font-black text-blue-600">${{finalPrice()}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="hidden lg:flex lg:flex-col lg:items-end lg:justify-between">
+        <span class="text-sm text-slate-500">Subtotal</span>
+        <span class="text-xl font-black text-slate-950">${{totalPrice()}}</span>
+    </div>
+</article>

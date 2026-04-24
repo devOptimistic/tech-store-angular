@@ -1,0 +1,17 @@
+<div class="rounded-[32px] border border-slate-200 bg-white p-4 shadow-soft sm:p-6">
+    <div class="flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div>
+            <h2 class="text-xl font-black tracking-tight text-slate-950">Cart Items</h2>
+            <p class="mt-1 text-sm text-slate-500">{{store.cartItemsCount()}} products in your cart</p>
+        </div>
+        <button (click)="store.clearCart()"
+            class="text-sm font-semibold text-red-500 transition hover:border-slate-300 hover:bg-slate-50 h-10 w-20 cursor-pointer">Clear
+            Cart</button>
+    </div>
+
+    <div class="divide-y divide-slate-200">
+        @for (item of store.cartItems(); track $index) {
+        <app-show-cart-item [item]="item" />
+        }
+    </div>
+</div>
