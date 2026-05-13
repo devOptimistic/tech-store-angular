@@ -71,9 +71,6 @@ Push to the branch (git push origin feature/AmazingFeature)
 
 Open a Pull Request
 
-## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 🙏 Acknowledgments
 1. Angular Team for amazing framework updates
 2. NgRx Team for signal store implementation
