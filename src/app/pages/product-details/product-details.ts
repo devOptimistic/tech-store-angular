@@ -3,10 +3,11 @@ import { Product } from '../../models/product';
 import { TechShopStore } from '../../tech-shop-store';
 import { QtySelector } from "../../components/qty-selector/qty-selector";
 import { Rating } from "../../components/rating/rating";
+import { RecommendedProducts } from "../../components/recommended-products/recommended-products";
 
 @Component({
   selector: 'app-product-details',
-  imports: [QtySelector, Rating],
+  imports: [QtySelector, Rating, RecommendedProducts],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })

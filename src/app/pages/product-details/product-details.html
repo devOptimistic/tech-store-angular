@@ -57,11 +57,12 @@
       <span class="text-sm text-slate-300">|</span>
       <!-- <p class="text-sm text-slate-500">SKU: ZB-A14-512</p> -->
     </div>
+    @if(product()?.inStock){
 
     <div class="flex flex-wrap items-end gap-3">
       <span class="text-3xl font-black text-blue-600 sm:text-4xl">${{toFixed(finalPrice())}}</span>
       @if(product()?.discount! > 0){
-        <span class="text-lg font-semibold text-slate-400 line-through">${{toFixed(product()?.price!)}}</span>
+      <span class="text-lg font-semibold text-slate-400 line-through">${{toFixed(product()?.price!)}}</span>
       }
       <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-600">{{product()?.discount}}% OFF</span>
     </div>
@@ -81,11 +82,9 @@
       </div>
 
     </div>
-
     <div class="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
       @if(cartItem()){
-      <app-qty-selector [removable]="true"
-       [quantity]="cartItem()?.quantity!"
+      <app-qty-selector [removable]="true" [quantity]="cartItem()?.quantity!"
         (qtyUpdated)="store.setItemQuantity({productId: this.product()?.id! , quantity: $event})" />
       } @else {
       <button (click)="store.addToCart(product()!,1)"
@@ -113,6 +112,7 @@
       </button>
     </div>
 
+
     <div class="grid gap-3 sm:grid-cols-3">
       <div class="rounded-2xl bg-slate-50 p-4">
         <p class="text-sm font-bold text-slate-900">Free Shipping</p>
@@ -127,30 +127,21 @@
         <p class="mt-1 text-xs leading-6 text-slate-500">Protected checkout and payment.</p>
       </div>
     </div>
+    } @else {
+    <p class="mt-2 text-lg text-gray-600">Out of Stock</p>
+    }
   </div>
+
 </section>
 
 <section class="mt-6 grid gap-6 xl:grid-cols-[1fr_340px]">
   <div class="space-y-6">
     <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
-      <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-4">
-        <button class="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white">Description</button>
-        <button
-          class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Specifications</button>
-        <button
-          class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Reviews</button>
-      </div>
+      <h2 class="text-2xl font-black tracking-tight text-slate-950">Description</h2>
 
-      <div class="mt-6 space-y-5 text-sm leading-8 text-slate-600 sm:text-base">
+      <div class="mt-4 space-y-5 text-sm leading-8 text-slate-600 sm:text-base">
         <p>
-          ZenBook Air 14 combines elegant portability with powerful hardware for users who want a premium experience
-          across work, study, entertainment, and creative tasks. Its slim body, bright display, and smooth multitasking
-          performance make it a versatile daily companion.
-        </p>
-        <p>
-          The laptop features a sharp 14-inch display, a modern processor, fast SSD storage, and all-day battery
-          performance. It is ideal for professionals who need a reliable machine for productivity, meetings,
-          presentations, editing, and travel.
+          {{product()?.description}}
         </p>
         <div class="grid gap-4 sm:grid-cols-2">
           <div class="rounded-2xl bg-slate-50 p-5">
@@ -178,34 +169,16 @@
     <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
       <div class="flex items-center justify-between gap-4">
         <h2 class="text-2xl font-black tracking-tight text-slate-950">Specifications</h2>
-        <button class="text-sm font-semibold text-blue-600">Download PDF</button>
+        <!-- <button class="text-sm font-semibold text-blue-600">Download PDF</button> -->
       </div>
 
       <div class="mt-6 grid gap-3">
+        @for (prop of product()?.moreProperties; track $index) {
         <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Display</span><span class="text-sm text-slate-600">14-inch IPS,
-            2.8K resolution</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Processor</span><span class="text-sm text-slate-600">Intel Core i7,
-            latest generation</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Memory</span><span class="text-sm text-slate-600">16GB LPDDR5
-            RAM</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Storage</span><span class="text-sm text-slate-600">512GB NVMe
-            SSD</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Graphics</span><span class="text-sm text-slate-600">Integrated
-            Intel Iris Graphics</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Battery</span><span class="text-sm text-slate-600">Up to 14 hours
-            mixed usage</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Ports</span><span class="text-sm text-slate-600">USB-C, USB-A,
-            HDMI, 3.5mm Audio</span></div>
-        <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
-            class="text-sm font-bold text-slate-900">Weight</span><span class="text-sm text-slate-600">1.24 kg</span>
+            class="text-sm font-bold text-slate-900">{{prop.label}}</span>
+          <span class="text-sm text-slate-600">{{prop.value}}</span>
         </div>
+        }
       </div>
     </div>
 
@@ -275,7 +248,7 @@
       </div>
     </div>
 
-    <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-6">
+    <!-- <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-6">
       <div class="flex items-center justify-between gap-3">
         <h2 class="text-xl font-black tracking-tight text-slate-950">Included in Box</h2>
       </div>
@@ -285,58 +258,8 @@
         <li class="rounded-2xl bg-slate-50 px-4 py-3">Charging Cable</li>
         <li class="rounded-2xl bg-slate-50 px-4 py-3">User Manual & Warranty Card</li>
       </ul>
-    </div>
+    </div> -->
   </aside>
 </section>
 
-<section class="mt-6 rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-    <div>
-      <p class="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">Related Products</p>
-      <h2 class="mt-2 text-2xl font-black tracking-tight text-slate-950">You May Also Like</h2>
-    </div>
-    <a href="#" class="text-sm font-semibold text-blue-600">View all products</a>
-  </div>
-
-  <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-    <article
-      class="rounded-[28px] border border-slate-200 bg-white p-4 shadow-soft transition hover:-translate-y-1 hover:shadow-card sm:p-5">
-      <div class="rounded-[24px] bg-slate-50 p-7 text-center text-6xl">🖥️</div>
-      <h3 class="mt-5 text-lg font-bold text-slate-900">ViewMax Monitor</h3>
-      <p class="mt-1 text-sm text-slate-500">27-inch · 2K Display</p>
-      <div class="mt-5 flex items-center justify-between"><span
-          class="text-xl font-black text-blue-600">$319</span><button
-          class="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">Add</button></div>
-    </article>
-
-    <article
-      class="rounded-[28px] border border-slate-200 bg-white p-4 shadow-soft transition hover:-translate-y-1 hover:shadow-card sm:p-5">
-      <div class="rounded-[24px] bg-slate-50 p-7 text-center text-6xl">⌨️</div>
-      <h3 class="mt-5 text-lg font-bold text-slate-900">MechaKeys Pro</h3>
-      <p class="mt-1 text-sm text-slate-500">Wireless · RGB Keyboard</p>
-      <div class="mt-5 flex items-center justify-between"><span
-          class="text-xl font-black text-blue-600">$129</span><button
-          class="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">Add</button></div>
-    </article>
-
-    <article
-      class="rounded-[28px] border border-slate-200 bg-white p-4 shadow-soft transition hover:-translate-y-1 hover:shadow-card sm:p-5">
-      <div class="rounded-[24px] bg-slate-50 p-7 text-center text-6xl">🖱️</div>
-      <h3 class="mt-5 text-lg font-bold text-slate-900">Swift Mouse X</h3>
-      <p class="mt-1 text-sm text-slate-500">Ergonomic · Wireless</p>
-      <div class="mt-5 flex items-center justify-between"><span
-          class="text-xl font-black text-blue-600">$69</span><button
-          class="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">Add</button></div>
-    </article>
-
-    <article
-      class="rounded-[28px] border border-slate-200 bg-white p-4 shadow-soft transition hover:-translate-y-1 hover:shadow-card sm:p-5">
-      <div class="rounded-[24px] bg-slate-50 p-7 text-center text-6xl">🎧</div>
-      <h3 class="mt-5 text-lg font-bold text-slate-900">AirTone Max</h3>
-      <p class="mt-1 text-sm text-slate-500">ANC · Premium Audio</p>
-      <div class="mt-5 flex items-center justify-between"><span
-          class="text-xl font-black text-blue-600">$229</span><button
-          class="rounded-2xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white">Add</button></div>
-    </article>
-  </div>
-</section>
+<app-recommended-products [category]="product()?.category" />

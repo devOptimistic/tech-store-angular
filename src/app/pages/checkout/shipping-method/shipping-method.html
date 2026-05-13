@@ -1,0 +1,33 @@
+<!-- Delivery Method -->
+<div class="rounded-2xl border border-slate-200 bg-white shadow-soft overflow-hidden">
+  <div class="border-b border-slate-100 bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-4">
+    <div class="flex items-center gap-2">
+      <span class="text-xl">🚚</span>
+      <h2 class="text-lg font-black text-slate-900">Delivery Method</h2>
+    </div>
+  </div>
+
+  <div class="p-6">
+    <div class="space-y-3">
+      @for (item of store.shippingTypes(); track $index) {
+      <label class="flex cursor-pointer items-center justify-between rounded-xl p-4"
+              [ngClass]="[store.selectedShippingType() == item.id? 'border-2 border-blue-200 bg-blue-50' : 'border border-slate-200 transition hover:bg-slate-50']">
+        <div class="flex items-center gap-3">
+          <input type="radio" name="delivery" [value]="item.id" [(ngModel)]="store.selectedShippingType" class="h-4 w-4 text-blue-600" />
+          <div>
+            <p class="font-semibold text-slate-900">{{item.label}}</p>
+            <p class="text-xs text-slate-500">{{item.description}}</p>
+          </div>
+        </div>
+        <span class="font-bold text-slate-900" [class.text-green-600]="item.cost == 0">
+          @if(item.cost == 0){
+          Free
+          } @else {
+          ${{item.cost}}
+          }
+        </span>
+      </label>
+      }
+    </div>
+  </div>
+</div>

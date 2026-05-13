@@ -1,0 +1,44 @@
+<!-- Delivery Address Section -->
+<div class="rounded-2xl border border-slate-200 bg-white shadow-soft overflow-hidden">
+    <div class="border-b border-slate-100 bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-4">
+        <div class="flex items-center gap-2">
+            <span class="text-xl">📍</span>
+            <h2 class="text-lg font-black text-slate-900">Delivery Address</h2>
+        </div>
+        <p class="text-sm text-slate-500 mt-0.5">Where should we ship your order?</p>
+    </div>
+
+    <div class="p-6">
+        <!-- Saved Addresses -->
+        <div class="mb-5">
+            <label class="mb-3 block text-sm font-semibold text-slate-700">Select saved address</label>
+            <div class="space-y-3">
+                @for (address of store.user()?.addresses; track address.id) {
+                <label
+                    class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-200 p-3 transition hover:bg-slate-50">
+                    <input type="radio" name="address" class="mt-1" [value]="address.id" [checked]="address.isMain"
+                        (change)="store.setMainAddress(address.id)" />
+                    <div>
+                        <p class="font-semibold text-slate-900">{{address.fullName}}</p>
+                        <p class="text-sm text-slate-500">{{address.streetAddress}}, {{address.city}},
+                            {{address.postalCode}}</p>
+                        <p class="text-sm text-slate-500">Phone: {{address.phone}}</p>
+                    </div>
+                </label>
+                }
+            </div>
+        </div>
+
+        <!-- Add New Address Button -->
+        <button (click)="showNewAddressForm.set(true)"
+            class="cursor-pointer flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 py-3 text-sm font-semibold text-blue-600 transition hover:bg-blue-50">
+            + Add New Address
+        </button>
+
+        @if (showNewAddressForm()) {
+        <!-- New Address Form (Hidden by default) -->
+        <app-address-form (requestCancel)="showNewAddressForm.set(false)" />
+        }
+
+    </div>
+</div>

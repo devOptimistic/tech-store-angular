@@ -1,79 +1,224 @@
-<header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl">
+<!-- header.component.html -->
+<header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur-lg">
   <div class="mx-auto max-w-7xl px-4 lg:px-8">
+    
+    <!-- Main Header Row -->
     <div class="flex h-16 items-center justify-between gap-3 sm:h-18">
-      <a href="#" class="flex min-w-0 items-center gap-3">
-        <div
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-black text-white shadow-soft">
-          TR</div>
+      
+      <!-- Logo -->
+      <a routerLink="/" class="flex min-w-0 items-center gap-3">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-black text-white shadow-soft">
+          TR
+        </div>
         <div class="min-w-0">
           <p class="truncate text-base font-black tracking-tight text-slate-900">Tech Role</p>
           <p class="truncate text-[11px] text-slate-500">Digital Store</p>
         </div>
       </a>
 
+      <!-- Desktop Navigation -->
       <nav class="hidden items-center gap-6 text-sm font-medium text-slate-600 lg:flex">
-        @for(item of navList;track item.title){
-        <a [routerLink]="item.link" class="transition hover:text-blue-600">{{item.title}}</a>
+        @for(item of navList; track item.title){
+          <a [routerLink]="item.link" class="transition hover:text-blue-600" (click)="closeMobileMenu()">
+            {{item.title}}
+          </a>
         }
-        <!-- <a href="#home" class="transition hover:text-blue-600">Home</a>
-            <a href="#categories" class="transition hover:text-blue-600">Categories</a>
-            <a href="#featured" class="transition hover:text-blue-600">Featured</a>
-            <a href="#deals" class="transition hover:text-blue-600">Deals</a>
-            <a href="#brands" class="transition hover:text-blue-600">Brands</a>
-            <a href="#reviews" class="transition hover:text-blue-600">Reviews</a> -->
       </nav>
 
+      <!-- Desktop Search -->
       <div class="hidden flex-1 px-4 lg:block xl:px-8">
-        <div
-          class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 transition focus-within:border-blue-300 focus-within:bg-white focus-within:shadow-soft">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-              d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
+        <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 transition focus-within:border-blue-300 focus-within:bg-white focus-within:shadow-soft">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
           </svg>
-          <input type="text" placeholder="Search laptops, phones, headphones..."
-            class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
+          <input type="text" placeholder="Search laptops, phones, headphones..." class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
         </div>
       </div>
 
+      <!-- Desktop Action Buttons -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <button
-          class="hidden rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">Sign
-          In</button>
+        
+        <!-- When user is NOT logged in -->
+        @if(store.user() == undefined) {
+          <button (click)="openSignInDialog()"
+            class="cursor-pointer hidden rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 md:inline-flex">
+            Sign In
+          </button>
+          <button (click)="openSignUpDialog()"
+            class="cursor-pointer hidden rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-600 md:inline-flex bg-blue-500">
+            Sign Up
+          </button>
+        } @else {
+        <!-- When user IS logged in -->
+          <div class="relative group hidden md:block">
+            <button class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">
+              <div class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-xs font-bold text-white">
+                <img class="rounded-full" [src]="store.user()?.imageUrl" alt="">
+              </div>
+              <span class="max-w-[100px] truncate">{{store.user()?.name}}</span>
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <!-- Dropdown Menu -->
+            <div class="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-slate-200 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="p-2">
+                <!-- <a routerLink="/profile" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
+                  <span>👤</span> My Profile
+                </a>
+                <a routerLink="/orders" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
+                  <span>📦</span> My Orders
+                </a>
+                <a routerLink="/wishlist" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
+                  <span>❤️</span> Wishlist
+                </a>
+                <a routerLink="/tracking" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
+                  <span>🚚</span> Track Order
+                </a>
+                <div class="my-1 h-px bg-slate-100"></div> -->
+                <button (click)="store.signOut()" class="cursor-pointer flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition">
+                  <mat-icon>logout</mat-icon> Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        }
 
+
+        <!-- Wishlist Button -->
         <button routerLink="/wishlist"
           class="cursor-pointer relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
           <span class="text-lg">♡</span>
           @if(store.wishlistItemsCount() > 0){
-          <span
-            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">{{store.wishlistItemsCount()}}</span>
+            <span class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">
+              {{store.wishlistItemsCount()}}
+            </span>
           }
         </button>
 
-        <button
-          class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800 cursor-pointer"
+        <!-- Cart Button -->
+        <button class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800 cursor-pointer"
           routerLink="/cart">
           <span class="text-lg">🛒</span>
           @if(store.cartItemsCount() > 0){
-          <span
-            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold">{{store.cartItemsCount()}}</span>
+            <span class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold">
+              {{store.cartItemsCount()}}
+            </span>
+          }
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button (click)="toggleMobileMenu()"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 lg:hidden">
+          @if(!isMobileMenuOpen()) {
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          } @else {
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
           }
         </button>
       </div>
     </div>
 
+    <!-- Mobile Search Row -->
     <div class="flex items-center gap-2 pb-3 lg:hidden">
       <div class="flex flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-            d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
         </svg>
-        <input type="text" placeholder="Search products..."
-          class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
+        <input type="text" placeholder="Search products..." class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
       </div>
-      <button
-        class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 lg:hidden">☰</button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  @if(isMobileMenuOpen()) {
+    <div class="fixed inset-0 z-40 bg-black/50 lg:hidden h-screen" (click)="closeMobileMenu()"></div>
+  }
+  
+  <!-- Mobile Navigation Menu -->
+  <div class="fixed top-0 right-0 z-50 h-full w-80 transform bg-white shadow-xl transition-transform duration-300 ease-in-out lg:hidden"
+    [class.translate-x-0]="isMobileMenuOpen()"
+    [class.translate-x-full]="!isMobileMenuOpen()">
+    
+    <div class="flex flex-col h-full">
+      <!-- Mobile Menu Header -->
+      <div class="flex items-center justify-between border-b border-slate-100 p-4">
+        <div class="flex items-center gap-2">
+          <div class="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 text-sm font-black text-white">TR</div>
+          <span class="font-bold text-slate-900">Tech Role</span>
+        </div>
+        <button (click)="closeMobileMenu()" class="rounded-lg p-1 text-slate-400 hover:bg-slate-100">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- User Info for Mobile (when logged in) -->
+      @if(store.user()) {
+        <div class="border-b border-slate-100 p-4 bg-gradient-to-r from-blue-50 to-cyan-50">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 text-base font-bold text-white">
+              {{getInitials(store.user()?.name!)}}
+            </div>
+            <div>
+              <p class="font-bold text-slate-900">{{store.user()?.name}}</p>
+              <p class="text-xs text-slate-500">{{store.user()?.email}}</p>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Mobile Navigation Links -->
+      <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+        @for(item of navList; track item.title){
+          <a [routerLink]="item.link" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
+            <span class="text-lg">
+              @switch(item.title) {
+                @case('Home') {🏠}
+                @default {🔹}
+              }
+            </span>
+            {{item.title}}
+          </a>
+        }
+        
+        <div class="my-3 h-px bg-slate-100"></div>
+
+        <!-- Mobile Auth Links -->
+        @if(!store.user()) {
+          <button (click)="openSignInDialog(); closeMobileMenu()" class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+            <mat-icon>login</mat-icon> Sign In
+          </button>
+          <button (click)="openSignUpDialog(); closeMobileMenu()" class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 transition">
+            <mat-icon>signup</mat-icon> Sign Up
+          </button>
+        }
+
+        @if(store.user()) {
+          <a routerLink="/profile" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
+            <span>👤</span> My Profile
+          </a>
+          <a routerLink="/orders" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
+            <span>📦</span> My Orders
+          </a>
+          <a routerLink="/wishlist" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
+            <span>❤️</span> Wishlist
+          </a>
+          <a routerLink="/tracking" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
+            <span>🚚</span> Track Order
+          </a>
+          <div class="my-2 h-px bg-slate-100"></div>
+          <button (click)="store.signOut()" class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition">
+            <span>🚪</span> Sign Out
+          </button>
+        }
+      </nav>
     </div>
   </div>
 </header>

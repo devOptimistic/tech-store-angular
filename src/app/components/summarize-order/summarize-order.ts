@@ -13,13 +13,11 @@ export class SummarizeOrder {
     this.store.cartItems().reduce((acc, item) => acc + item.product.price * item.quantity, 0)
   );
   tax = computed(() => 0.05 * this.subtotal());
-  shipping = computed(() => this.subtotal() >= 1000 ? 0 : 30);
   discount = computed(() =>
     this.store.cartItems().reduce((acc, item) => acc + (item.product.discount / 100) * (item.product.price * item.quantity), 0)
   );
-
   total = computed(() =>
-    this.subtotal() + this.tax() + this.shipping() - this.discount()
+    this.subtotal() + this.tax() + this.store.shippingCost()! - this.discount()
   )
 
   toFixed(num: number) {
