@@ -1,6 +1,6 @@
 # 🛍️ Digital Products Store
 
-[![Angular](https://img.shields.io/badge/Angular-19-red.svg)](https://angular.io/)
+[![Angular](https://img.shields.io/badge/Angular-21-red.svg)](https://angular.io/)
 [![NgRx](https://img.shields.io/badge/NgRx-Signals-purple.svg)](https://ngrx.io/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-blue.svg)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -11,7 +11,7 @@ A modern, high-performance e-commerce platform for selling digital products, bui
 
 ## ✨ Key Features
 
-- 🚀 **Angular 19** with cutting-edge Signal-based architecture
+- 🚀 **Angular 21** with cutting-edge Signal-based architecture
 - 📦 **NgRx Signals** - Reactive state management without boilerplate
 - 🎨 **TailwindCSS** - Rapid UI development with utility classes
 - 💳 **Smart Shopping Cart** - Real-time calculations and updates
@@ -43,9 +43,10 @@ npm install
 ng serve
 
 Navigate to http://localhost:4200/. The application will automatically reload if you change any source files.
+```
 
 ## 🔧 Tech Stack
-Framework: Angular 19
+Framework: Angular 21
 
 State Management: NgRx Signals
 
