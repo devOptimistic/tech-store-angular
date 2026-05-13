@@ -34,7 +34,7 @@ A modern, high-performance e-commerce platform for selling digital products, bui
 git clone https://github.com/devOptimistic/tech-store-angular.git
 
 # Navigate to project directory
-cd digital-products-store
+cd tech-store-angular
 
 # Install dependencies
 npm install
