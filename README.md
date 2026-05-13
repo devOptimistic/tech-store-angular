@@ -46,35 +46,25 @@ Navigate to http://localhost:4200/. The application will automatically reload if
 ```
 
 ## 🔧 Tech Stack
-Framework: Angular 21
-
-State Management: NgRx Signals
-
-Styling: TailwindCSS
-
-Language: TypeScript 5.0+
-
-Build Tool: Angular CLI
-
-Package Manager: npm/yarn/pnpm
+- Framework: Angular 21
+- State Management: NgRx Signals
+- Styling: TailwindCSS
+- Language: TypeScript 5.0+
+- Build Tool: Angular CLI
+- Package Manager: npm/yarn/pnpm
 
 ## 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-Fork the repository
-
-Create your feature branch (git checkout -b feature/AmazingFeature)
-
-Commit your changes (git commit -m 'Add some AmazingFeature')
-
-Push to the branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/AmazingFeature)
+3. Commit your changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
 
 ## 🙏 Acknowledgments
-1. Angular Team for amazing framework updates
-2. NgRx Team for signal store implementation
-3. TailwindCSS for utility-first CSS
+- Angular Team for amazing framework updates
+- NgRx Team for signal store implementation
+- TailwindCSS for utility-first CSS
 
 ## 📧 Contact
 Mohammad Javad Bayatani - mohammad.bayatani.dev@gmail.com
