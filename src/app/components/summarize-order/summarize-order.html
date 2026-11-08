@@ -5,25 +5,31 @@
         <div class="mt-5 space-y-4 border-b border-slate-200 pb-5">
             <div class="flex items-center justify-between gap-4 text-sm">
                 <span class="text-slate-500">Subtotal</span>
-                <span class="font-semibold text-slate-900">${{toFixed(subtotal())}}</span>
+                <span class="font-semibold text-slate-900">${{toFixed(totals().subtotal)}}</span>
             </div>
             <div class="flex items-center justify-between gap-4 text-sm">
                 <span class="text-slate-500">Shipping</span>
-                <span class="font-semibold text-green-600">{{store.shippingCost() == 0? 'Free' : '$' + toFixed(store.shippingCost()!)}}</span>
+                <span class="font-semibold text-green-600">{{totals().shipping == 0? 'Free' : '$' + toFixed(totals().shipping)}}</span>
             </div>
             <div class="flex items-center justify-between gap-4 text-sm">
                 <span class="text-slate-500">Discount</span>
-                <span class="font-semibold text-red-500">-${{toFixed(discount())}}</span>
+                <span class="font-semibold text-red-500">-${{toFixed(totals().itemDiscount)}}</span>
             </div>
+            @if (store.promo(); as promo) {
+            <div class="flex items-center justify-between gap-4 text-sm">
+                <span class="text-slate-500">Promo ({{promo.code}})</span>
+                <span class="font-semibold text-red-500">{{promo.type === 'freeShipping' ? 'Free shipping' : '-$' + toFixed(totals().promoDiscount)}}</span>
+            </div>
+            }
             <div class="flex items-center justify-between gap-4 text-sm">
                 <span class="text-slate-500">Tax</span>
-                <span class="font-semibold text-slate-900">${{toFixed(tax())}}</span>
+                <span class="font-semibold text-slate-900">${{toFixed(totals().tax)}}</span>
             </div>
         </div>
 
         <div class="mt-5 flex items-center justify-between gap-4">
             <span class="text-base font-bold text-slate-900">Total</span>
-            <span class="text-3xl font-black text-blue-600">${{toFixed(total())}}</span>
+            <span class="text-3xl font-black text-blue-600">${{toFixed(totals().total)}}</span>
         </div>
 
         <div class="mt-6 space-y-3">

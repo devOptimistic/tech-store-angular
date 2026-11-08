@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SignInDialog } from "./components/sign-in-dialog/sign-in-dialog";
 import { Address, SignInParams, SignUpParams, User } from "./models/user";
 import { PRODUCTS } from "./data/products.data";
+import { findPromoCode } from "./data/promo-codes";
 import { avatarFor, createDemoAccount, DEMO_ACCOUNT, UserAccount } from "./data/demo-account";
 import { Router } from "@angular/router";
 import { Order } from "./models/order";
@@ -24,6 +25,7 @@ export type TechShopState = {
     user: User | undefined;
     users: UserAccount[];
     orders: Order[];
+    appliedPromo: string | undefined;
     lastOrderId: string | undefined;
     loading: boolean,
     selectedProductId: number | undefined
@@ -63,12 +65,13 @@ export const TechShopStore = signalStore(
         user: undefined,
         users: [createDemoAccount()],
         orders: [],
+        appliedPromo: undefined,
         lastOrderId: undefined,
         selectedShippingType: 1,
         loading: false,
         selectedProductId: undefined
     } as TechShopState),
-    withStorageSync({ key: 'tech-shop', select: ({ wishlistItems, cartItems, user, users, orders, lastOrderId }) => ({ wishlistItems, cartItems, user, users, orders, lastOrderId }) }),
+    withStorageSync({ key: 'tech-shop', select: ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo }) => ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo }) }),
     withComputed(({ wishlistItems, cartItems, shippingTypes, selectedShippingType, selectedProductId, products, orders, user, lastOrderId }) => ({
         userOrders: computed(() => orders().filter(o => o.userId === user()?.id).sort((a, b) => b.createdAt.localeCompare(a.createdAt))),
         lastOrder: computed(() => orders().find(o => o.id === lastOrderId())),
@@ -77,6 +80,26 @@ export const TechShopStore = signalStore(
         shippingCost: computed(() => shippingTypes().find(s => s.id == selectedShippingType())?.cost),
         selectedProduct: computed(() => products().find(s => s.id == selectedProductId())),
         // cartItemsTotalPrice: computed(()=> cartItems().reduce((acc, item) => ))
+    })),
+    withComputed(({ cartItems, shippingCost, appliedPromo }) => ({
+        promo: computed(() => findPromoCode(appliedPromo())),
+        totals: computed(() => {
+            const items = cartItems();
+            const subtotal = items.reduce((acc, i) => acc + i.product.price * i.quantity, 0);
+            const itemDiscount = items.reduce((acc, i) => acc + (i.product.discount / 100) * i.product.price * i.quantity, 0);
+            const promo = findPromoCode(appliedPromo());
+            const promoDiscount = promo?.type === 'percent' ? ((subtotal - itemDiscount) * promo.value) / 100 : 0;
+            const shipping = promo?.type === 'freeShipping' ? 0 : (shippingCost() ?? 0);
+            const tax = 0.05 * subtotal;
+            return {
+                subtotal,
+                itemDiscount,
+                promoDiscount,
+                shipping,
+                tax,
+                total: subtotal + tax + shipping - itemDiscount - promoDiscount,
+            };
+        }),
     })),
     withMethods((store, toaster = inject(Toaster), matDialog = inject(MatDialog), router = inject(Router)) => ({
         setProductId: signalMethod<number>((id: number) => {
@@ -246,6 +269,32 @@ export const TechShopStore = signalStore(
             patchState(store, { user: updatedUser });
             toaster.success('Main address updated.');
         },
+        applyPromo: (code: string) => {
+            const promo = findPromoCode(code);
+            if (!promo) {
+                toaster.error('Invalid promo code.');
+                return false;
+            }
+            patchState(store, { appliedPromo: promo.code });
+            toaster.success(`Promo code applied: ${promo.label}`);
+            return true;
+        },
+        removePromo: () => {
+            patchState(store, { appliedPromo: undefined });
+        },
+        removeAddress: (addressId: number) => {
+            const currentUser = store.user();
+            if (!currentUser) return;
+            const updatedUser = produce(currentUser, (draft) => {
+                const wasMain = draft.addresses.find(a => a.id === addressId)?.isMain;
+                draft.addresses = draft.addresses.filter(a => a.id !== addressId);
+                if (wasMain && draft.addresses.length) {
+                    draft.addresses[0].isMain = true;
+                }
+            });
+            patchState(store, { user: updatedUser });
+            toaster.success('Address removed.');
+        },
         placeOrder: async () => {
             patchState(store, { loading: true });
 
@@ -257,21 +306,20 @@ export const TechShopStore = signalStore(
             }
 
             const items = store.cartItems();
-            const subtotal = items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
-            const discount = items.reduce((acc, item) => acc + (item.product.discount / 100) * item.product.price * item.quantity, 0);
-            const tax = 0.05 * subtotal;
-            const shippingCost = store.shippingCost() ?? 0;
+            const totals = store.totals();
 
             const order: Order = {
                 id: crypto.randomUUID(),
                 number: 'TS-' + Math.floor(10000 + Math.random() * 90000),
                 userId: user.id,
                 createdAt: new Date().toISOString(),
-                subtotal,
-                tax,
-                discount,
-                shippingCost,
-                total: subtotal + tax + shippingCost - discount,
+                subtotal: totals.subtotal,
+                tax: totals.tax,
+                discount: totals.itemDiscount,
+                promoCode: store.promo()?.code,
+                promoDiscount: totals.promoDiscount,
+                shippingCost: totals.shipping,
+                total: totals.total,
                 shippingType: store.selectedShippingType(),
                 items,
                 paymentStatus: 'success',
@@ -279,7 +327,7 @@ export const TechShopStore = signalStore(
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            patchState(store, { loading: false, cartItems: [], orders: [...store.orders(), order], lastOrderId: order.id });
+            patchState(store, { loading: false, cartItems: [], appliedPromo: undefined, orders: [...store.orders(), order], lastOrderId: order.id });
 
             router.navigate(['order-success']);
         }

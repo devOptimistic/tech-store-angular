@@ -105,7 +105,7 @@
         </div> -->
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <p class="text-sm text-slate-500">Showing <span class="font-semibold text-slate-900">1–12</span> of <span
+          <p class="text-sm text-slate-500">Showing <span class="font-semibold text-slate-900">{{rangeStart()}}–{{rangeEnd()}}</span> of <span
               class="font-semibold text-slate-900">{{filteredProducts().length}}</span> products</p>
           <select [(ngModel)]="selectedSort"
             class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 outline-none">
@@ -130,26 +130,29 @@
       </div>
     }
     <div class="mt-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
-      @for (product of filteredProducts(); track product.id){
+      @for (product of pagedProducts(); track product.id){
       <app-product-card [product]="product"></app-product-card>
       }
     </div>
 
+    @if (totalPages() > 1) {
     <div
       class="mt-6 flex flex-col gap-4 rounded-[28px] border border-slate-200 bg-white p-4 shadow-soft sm:flex-row sm:items-center sm:justify-between sm:p-5">
-      <p class="text-sm text-slate-500">Showing page <span class="font-semibold text-slate-900">1</span> of <span
-          class="font-semibold text-slate-900">12</span></p>
+      <p class="text-sm text-slate-500">Showing page <span class="font-semibold text-slate-900">{{currentPage()}}</span> of <span
+          class="font-semibold text-slate-900">{{totalPages()}}</span></p>
       <div class="flex flex-wrap gap-2">
-        <button
-          class="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Previous</button>
-        <button class="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white">1</button>
-        <button
-          class="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">2</button>
-        <button
-          class="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">3</button>
-        <button
-          class="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700">Next</button>
+        <button type="button" [disabled]="currentPage() === 1" (click)="goToPage(currentPage() - 1)"
+          class="cursor-pointer rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
+        @for (p of pages(); track p) {
+        <button type="button" (click)="goToPage(p)"
+          [class]="p === currentPage()
+            ? 'cursor-pointer rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white'
+            : 'cursor-pointer rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50'">{{p}}</button>
+        }
+        <button type="button" [disabled]="currentPage() === totalPages()" (click)="goToPage(currentPage() + 1)"
+          class="cursor-pointer rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40">Next</button>
       </div>
     </div>
+    }
   </div>
 </section>

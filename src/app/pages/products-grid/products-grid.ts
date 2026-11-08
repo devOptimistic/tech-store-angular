@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import { Product } from '../../models/product';
 import { TitleCasePipe } from '@angular/common';
 import { ProductCard } from "../../components/product-card/product-card";
@@ -24,6 +24,13 @@ export default class ProductsGrid {
   selectedPrice = signal<number | null>(null);
   selectedCategories = signal<string[]>([]);
   selectedSort = signal<number | null>(0);
+
+  readonly pageSize = 12;
+  // jumps back to page 1 whenever the search, category or any filter changes
+  page = linkedSignal<unknown, number>({
+    source: () => [this.category(), this.q(), this.selectedPrice(), this.selectedCategories(), this.selectedSort()],
+    computation: () => 1,
+  });
   private applyFilters(products: Product[]): Product[] {
     let result = [...products];
 
@@ -37,6 +44,21 @@ export default class ProductsGrid {
   }
 
   filteredProducts = computed(() => this.applyFilters(this.store.products()));
+
+  totalPages = computed(() => Math.max(1, Math.ceil(this.filteredProducts().length / this.pageSize)));
+  currentPage = computed(() => Math.min(this.page(), this.totalPages()));
+  pages = computed(() => Array.from({ length: this.totalPages() }, (_, i) => i + 1));
+  pagedProducts = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    return this.filteredProducts().slice(start, start + this.pageSize);
+  });
+  rangeStart = computed(() => (this.filteredProducts().length ? (this.currentPage() - 1) * this.pageSize + 1 : 0));
+  rangeEnd = computed(() => Math.min(this.currentPage() * this.pageSize, this.filteredProducts().length));
+
+  goToPage(page: number) {
+    this.page.set(Math.min(Math.max(1, page), this.totalPages()));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   private filterBySearch(products: Product[]): Product[] {
     const q = this.q()?.trim().toLowerCase();

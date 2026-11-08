@@ -4,11 +4,23 @@
             <h2 class="text-lg font-black text-slate-950">Have a discount code?</h2>
             <p class="mt-1 text-sm text-slate-500">Apply your promo code before checkout.</p>
         </div>
+        @if (store.promo(); as promo) {
+        <div class="flex items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm">
+            <span class="font-bold text-green-700">{{promo.code}}</span>
+            <span class="text-green-700">{{promo.label}}</span>
+            <button type="button" (click)="store.removePromo()" class="cursor-pointer ml-2 font-semibold text-red-600 hover:underline">Remove</button>
+        </div>
+        } @else {
         <div class="flex flex-col gap-3 sm:flex-row">
-            <input type="text" placeholder="Enter promo code"
-                class="h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none" />
-            <button class="h-12 rounded-2xl bg-slate-900 px-5 text-sm font-semibold text-white">Apply
+            <input type="text" placeholder="Enter promo code" aria-label="Promo code"
+                [value]="value()" (input)="value.set($any($event.target).value)" (keydown.enter)="apply()"
+                class="h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm uppercase outline-none" />
+            <button type="button" (click)="apply()" class="cursor-pointer h-12 rounded-2xl bg-slate-900 px-5 text-sm font-semibold text-white">Apply
                 Code</button>
         </div>
+        }
     </div>
+    @if (!store.promo()) {
+    <p class="mt-3 text-xs text-slate-500">Demo codes: @for (c of codes; track c.code) {<code class="font-semibold text-slate-700">{{c.code}}</code>{{$last ? '' : ', '}}}</p>
+    }
 </div>

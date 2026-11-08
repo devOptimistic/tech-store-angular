@@ -42,6 +42,9 @@
         <dl class="mt-2 grid grid-cols-2 gap-1 border-t border-slate-100 pt-4 text-sm text-slate-600 sm:ml-auto sm:max-w-xs">
           <dt>Subtotal</dt><dd class="text-right">{{ order.subtotal | currency }}</dd>
           <dt>Discount</dt><dd class="text-right">-{{ order.discount | currency }}</dd>
+          @if (order.promoDiscount) {
+            <dt>Promo ({{ order.promoCode }})</dt><dd class="text-right">-{{ order.promoDiscount | currency }}</dd>
+          }
           <dt>Tax</dt><dd class="text-right">{{ order.tax | currency }}</dd>
           <dt>Shipping</dt><dd class="text-right">{{ order.shippingCost | currency }}</dd>
         </dl>

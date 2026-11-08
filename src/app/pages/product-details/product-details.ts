@@ -3,11 +3,12 @@ import { Product } from '../../models/product';
 import { TechShopStore } from '../../tech-shop-store';
 import { QtySelector } from "../../components/qty-selector/qty-selector";
 import { StarRating } from "../../components/star-rating/star-rating";
+import { RouterLink } from '@angular/router';
 import { ViewReviews } from "./view-reviews/view-reviews";
 
 @Component({
   selector: 'app-product-details',
-  imports: [QtySelector, StarRating, ViewReviews],
+  imports: [QtySelector, StarRating, ViewReviews, RouterLink],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })

@@ -222,4 +222,11 @@
 </section>
 
 <!-- <app-recommended-products [category]="product?.category" /> -->
+} @else {
+<section class="flex min-h-[50vh] flex-col items-center justify-center text-center">
+  <p class="text-5xl">🔍</p>
+  <h1 class="mt-4 text-2xl font-black text-slate-950">Product not found</h1>
+  <p class="mt-2 text-slate-600">This product doesn't exist or is no longer available.</p>
+  <a routerLink="/products/all" class="mt-6 rounded-2xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800">Browse Products</a>
+</section>
 }
