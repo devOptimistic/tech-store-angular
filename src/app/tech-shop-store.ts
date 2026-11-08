@@ -56,9 +56,11 @@ export const TechShopStore = signalStore(
             'Cameras'
         ],
         sortTypes: [
-            { label: 'Sort by: Popular', value: 0 },
+            { label: 'Top rated', value: 0 },
             { label: 'Price: Low to High', value: 1 },
-            { label: 'Price: High to Low', value: 2 }
+            { label: 'Price: High to Low', value: 2 },
+            { label: 'Biggest discount', value: 3 },
+            { label: 'Name: A to Z', value: 4 }
         ],
         shippingTypes: [
             { id: 0, label: 'Express Delivery', description: 'Estimated delivery: 1-2 business days', cost: 12.99 },

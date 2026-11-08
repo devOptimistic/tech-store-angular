@@ -201,7 +201,7 @@
         <p class="text-center text-sm font-bold uppercase tracking-[0.2em] text-slate-500">Trusted Brands</p>
         <div class="mt-6 grid grid-cols-2 gap-3 text-center sm:grid-cols-3 lg:grid-cols-6">
             @for (brand of brands(); track brand) {
-            <a routerLink="/products/all" [queryParams]="{ q: brand }"
+            <a routerLink="/products/all" [queryParams]="{ brand: brand }"
                 class="rounded-2xl bg-slate-50 px-4 py-4 text-sm font-black uppercase text-slate-500 transition hover:bg-blue-50 hover:text-blue-600">{{brand}}</a>
             }
         </div>

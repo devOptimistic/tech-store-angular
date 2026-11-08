@@ -5,6 +5,7 @@ import { Product } from '../../models/product';
 import { ProductCard } from '../../components/product-card/product-card';
 import { StarRating } from '../../components/star-rating/star-rating';
 import { Toaster } from '../../services/toaster';
+import { finalPrice } from '../../utils/price';
 
 const CATEGORY_ICONS: Record<string, string> = {
   'Smartphones': '📱',
@@ -31,8 +32,6 @@ const FEATURED_TABS = [
 ];
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export const finalPrice = (p: Product) => p.price - (p.discount / 100) * p.price;
 
 @Component({
   selector: 'app-home',
