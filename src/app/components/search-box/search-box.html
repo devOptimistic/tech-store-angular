@@ -1,0 +1,35 @@
+<div class="relative">
+  <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 transition focus-within:border-blue-300 focus-within:bg-white focus-within:shadow-soft">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
+    </svg>
+    <input type="text" placeholder="Search laptops, phones, headphones..." aria-label="Search products"
+      class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
+      [value]="query()" (input)="onInput($event)" (focus)="open.set(true)" (blur)="close()"
+      (keydown.enter)="search()" (keydown.escape)="open.set(false)" />
+  </div>
+
+  @if (open() && query().trim()) {
+    <div class="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
+      @for (p of suggestions(); track p.id) {
+        <button type="button" (click)="openProduct(p.id)"
+          class="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left hover:bg-slate-50">
+          <img [src]="p.imageUrls[0]" alt="" class="h-10 w-10 rounded-lg object-cover" />
+          <span class="min-w-0 flex-1">
+            <span class="block truncate text-sm font-semibold text-slate-900">{{ p.name }}</span>
+            <span class="block text-xs text-slate-500">{{ p.category }}</span>
+          </span>
+          <span class="text-sm font-bold text-slate-900">${{ p.price }}</span>
+        </button>
+      } @empty {
+        <p class="px-4 py-3 text-sm text-slate-500">No products found.</p>
+      }
+      @if (suggestions().length) {
+        <button type="button" (click)="search()"
+          class="w-full cursor-pointer border-t border-slate-100 px-4 py-2.5 text-left text-sm font-semibold text-blue-600 hover:bg-slate-50">
+          See all results for "{{ query().trim() }}"
+        </button>
+      }
+    </div>
+  }
+</div>

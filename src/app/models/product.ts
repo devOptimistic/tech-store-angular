@@ -1,3 +1,5 @@
+import { UserReview } from "./user-review"
+
 export type Product = {
   id: number,
   name: string,
@@ -12,7 +14,8 @@ export type Product = {
   brand: string,
   color: string,
   discount: number,
-  moreProperties: ProductProperty[]
+  moreProperties: ProductProperty[],
+  reviews: UserReview[];
 }
 
 export type ProductProperty = {

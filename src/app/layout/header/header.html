@@ -27,12 +27,7 @@
 
       <!-- Desktop Search -->
       <div class="hidden flex-1 px-4 lg:block xl:px-8">
-        <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 transition focus-within:border-blue-300 focus-within:bg-white focus-within:shadow-soft">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
-          </svg>
-          <input type="text" placeholder="Search laptops, phones, headphones..." class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
-        </div>
+        <app-search-box />
       </div>
 
       <!-- Desktop Action Buttons -->
@@ -64,19 +59,13 @@
             <!-- Dropdown Menu -->
             <div class="absolute right-0 mt-2 w-56 origin-top-right rounded-xl border border-slate-200 bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div class="p-2">
-                <!-- <a routerLink="/profile" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
-                  <span>👤</span> My Profile
-                </a>
                 <a routerLink="/orders" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
                   <span>📦</span> My Orders
                 </a>
                 <a routerLink="/wishlist" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
                   <span>❤️</span> Wishlist
                 </a>
-                <a routerLink="/tracking" class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">
-                  <span>🚚</span> Track Order
-                </a>
-                <div class="my-1 h-px bg-slate-100"></div> -->
+                <div class="my-1 h-px bg-slate-100"></div>
                 <button (click)="store.signOut()" class="cursor-pointer flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition">
                   <mat-icon>logout</mat-icon> Sign Out
                 </button>
@@ -126,12 +115,7 @@
 
     <!-- Mobile Search Row -->
     <div class="flex items-center gap-2 pb-3 lg:hidden">
-      <div class="flex flex-1 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" />
-        </svg>
-        <input type="text" placeholder="Search products..." class="w-full bg-transparent text-sm outline-none placeholder:text-slate-400" />
-      </div>
+      <div class="flex-1"><app-search-box /></div>
     </div>
   </div>
 
@@ -201,17 +185,11 @@
         }
 
         @if(store.user()) {
-          <a routerLink="/profile" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
-            <span>👤</span> My Profile
-          </a>
           <a routerLink="/orders" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
             <span>📦</span> My Orders
           </a>
           <a routerLink="/wishlist" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
             <span>❤️</span> Wishlist
-          </a>
-          <a routerLink="/tracking" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition" (click)="closeMobileMenu()">
-            <span>🚚</span> Track Order
           </a>
           <div class="my-2 h-px bg-slate-100"></div>
           <button (click)="store.signOut()" class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition">

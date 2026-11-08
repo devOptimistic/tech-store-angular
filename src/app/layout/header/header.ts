@@ -5,10 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { SignInDialog } from '../../components/sign-in-dialog/sign-in-dialog';
 import { SignUpDialog } from '../../components/sign-up-dialog/sign-up-dialog';
 import { MatIcon } from "@angular/material/icon";
+import { SearchBox } from '../../components/search-box/search-box';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, MatIcon],
+  imports: [RouterLink, MatIcon, SearchBox],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

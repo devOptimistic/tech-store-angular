@@ -3,11 +3,11 @@ import { Product } from '../../models/product';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TechShopStore } from '../../tech-shop-store';
-import { Rating } from "../rating/rating";
+import { StarRating } from "../star-rating/star-rating";
 
 @Component({
   selector: 'app-product-card',
-  imports: [DecimalPipe, RouterLink, Rating],
+  imports: [RouterLink, StarRating],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 })

@@ -2,27 +2,30 @@ import { AfterViewInit, Component, computed, inject, input, signal } from '@angu
 import { Product } from '../../models/product';
 import { TechShopStore } from '../../tech-shop-store';
 import { QtySelector } from "../../components/qty-selector/qty-selector";
-import { Rating } from "../../components/rating/rating";
-import { RecommendedProducts } from "../../components/recommended-products/recommended-products";
+import { StarRating } from "../../components/star-rating/star-rating";
+import { ViewReviews } from "./view-reviews/view-reviews";
 
 @Component({
   selector: 'app-product-details',
-  imports: [QtySelector, Rating, RecommendedProducts],
+  imports: [QtySelector, StarRating, ViewReviews],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })
 export default class ProductDetails implements AfterViewInit{
 
   store = inject(TechShopStore);
-  id = input<number>();
-  product = computed(() => this.store.products().find(p => p.id == this.id()));
+  id = input.required<number>();
   activeImgUrl = signal<string>('')
-  isInWishlist = computed(()=> this.store.wishlistItems().find(p=> p.id === this.product()?.id));
-  cartItem = computed(()=> this.store.cartItems().find(p=> p.product.id === this.product()?.id));
-  finalPrice = computed(() => this.product()?.price! - (this.product()?.discount! / 100 * this.product()?.price!))
+  isInWishlist = computed(()=> this.store.wishlistItems().find(p=> p.id === this.store.selectedProduct()?.id));
+  cartItem = computed(()=> this.store.cartItems().find(p=> p.product.id === this.store.selectedProduct()?.id));
+  finalPrice = computed(() => this.store.selectedProduct()?.price! - (this.store.selectedProduct()?.discount! / 100 * this.store.selectedProduct()?.price!))
+
+  constructor(){
+    this.store.setProductId(this.id)
+  }
 
   ngAfterViewInit(){
-    this.activeImgUrl.set(this.product()?.imageUrls[0]!);
+    this.activeImgUrl.set(this.store.selectedProduct()?.imageUrls[0]!);
   }
 
   setActiveImgUrl(imgUrl: string) {

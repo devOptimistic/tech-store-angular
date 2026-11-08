@@ -1,12 +1,13 @@
+@if (store.selectedProduct(); as product){
 <section class="rounded-[28px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
   <div class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
     <span>Home</span>
     <span>/</span>
     <span>Products</span>
     <span>/</span>
-    <span>{{product()?.category}}</span>
+    <span>{{product?.category}}</span>
     <span>/</span>
-    <span class="font-semibold text-slate-900">{{product()?.name}}</span>
+    <span class="font-semibold text-slate-900">{{product?.name}}</span>
   </div>
 </section>
 
@@ -15,12 +16,13 @@
     <div class="rounded-[32px] border border-slate-200 bg-white p-4 shadow-soft sm:p-6">
       <div
         class="rounded-[28px] bg-gradient-to-br from-slate-50 to-blue-50 p-4 sm:p-6 flex items-center justify-center">
-        <img [src]="activeImgUrl()" alt="" class="w-full max-w-md h-auto object-contain max-h-[300px] sm:max-h-[400px]">
+        <img [src]="activeImgUrl()" alt="" class="w-full max-w-md h-auto object-contain max-h-[300px] sm:max-h-[400px]"
+          [style.view-transition-name]="'product-image-' + product.id" />
       </div>
     </div>
 
     <div class="grid grid-cols-4 gap-3">
-      @for (imgUrl of product()?.imageUrls; track $index) {
+      @for (imgUrl of product?.imageUrls; track $index) {
       <button
         class="rounded-[22px] border-2 border-blue-600 bg-white p-2 shadow-soft cursor-pointer hover:bg-blue-50 transition"
         (click)="setActiveImgUrl(imgUrl)">
@@ -34,44 +36,45 @@
 
   <div class="space-y-5 rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
     <div class="flex flex-wrap items-center gap-2">
-      @if (product()?.inStock) {
+      @if (product?.inStock) {
       <span class="rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-green-600">In Stock</span>
       }
       <!-- <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-600">Best Seller</span> -->
     </div>
 
     <div>
-      <h1 class="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{{product()?.name}}</h1>
+      <h1 class="text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">{{product?.name}}</h1>
       <p class="mt-2 text-sm leading-7 text-slate-600 sm:text-base">
-        {{product()?.description}}
+        {{product?.description}}
       </p>
     </div>
 
     <div class="flex flex-wrap items-center gap-4">
       <div class="flex items-center gap-1 text-lg text-amber-400">
-        <app-rating [rating]="product()?.rating!" />
+        <app-star-rating [rating]="product.rating!">
+          {{product?.rating}} rating ·
+          <span class="ml-1 text-slate-500">({{product?.reviewCount}})</span>
+        </app-star-rating>
       </div>
-      <p class="text-sm text-slate-500">{{product()?.rating}} rating · <span
-          class="ml-1 text-slate-500">({{product()?.reviewCount}})</span>
-      </p>
-      <span class="text-sm text-slate-300">|</span>
+      
+      <!-- <span class="text-sm text-slate-300">|</span> -->
       <!-- <p class="text-sm text-slate-500">SKU: ZB-A14-512</p> -->
     </div>
-    @if(product()?.inStock){
+    @if(product?.inStock){
 
     <div class="flex flex-wrap items-end gap-3">
       <span class="text-3xl font-black text-blue-600 sm:text-4xl">${{toFixed(finalPrice())}}</span>
-      @if(product()?.discount! > 0){
-      <span class="text-lg font-semibold text-slate-400 line-through">${{toFixed(product()?.price!)}}</span>
+      @if(product?.discount! > 0){
+      <span class="text-lg font-semibold text-slate-400 line-through">${{toFixed(product?.price!)}}</span>
       }
-      <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-600">{{product()?.discount}}% OFF</span>
+      <span class="rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-600">{{product?.discount}}% OFF</span>
     </div>
 
     <div class="grid gap-5 border-y border-slate-200 py-5">
       <div>
         <div class="flex items-center justify-between gap-3">
           <h2 class="text-sm font-black uppercase tracking-[0.18em] text-slate-900">Color</h2>
-          <p class="text-sm text-slate-500">{{product()?.color}}</p>
+          <p class="text-sm text-slate-500">{{product?.color}}</p>
         </div>
         <div class="mt-3 flex gap-3">
           <button
@@ -85,9 +88,9 @@
     <div class="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
       @if(cartItem()){
       <app-qty-selector [removable]="true" [quantity]="cartItem()?.quantity!"
-        (qtyUpdated)="store.setItemQuantity({productId: this.product()?.id! , quantity: $event})" />
+        (qtyUpdated)="store.setItemQuantity({productId: product?.id! , quantity: $event})" />
       } @else {
-      <button (click)="store.addToCart(product()!,1)"
+      <button (click)="store.addToCart(product!,1)"
         class="cursor-pointer rounded-2xl bg-slate-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-slate-800">
         Add to Cart
       </button>
@@ -97,7 +100,7 @@
       <button
         class="rounded-2xl bg-blue-600 px-6 py-4 text-sm font-semibold text-white transition hover:bg-blue-500">Buy
         Now</button>
-      <button (click)="toggleWishlist(product()!)"
+      <button (click)="toggleWishlist(product!)"
         class="cursor-pointer rounded-2xl border border-slate-200 bg-white px-6 py-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
         @if(isInWishlist()){
         <svg class="h-5 w-5 transition-colors" [class.fill-red-500]="isInWishlist()"
@@ -141,7 +144,7 @@
 
       <div class="mt-4 space-y-5 text-sm leading-8 text-slate-600 sm:text-base">
         <p>
-          {{product()?.description}}
+          {{product?.description}}
         </p>
         <div class="grid gap-4 sm:grid-cols-2">
           <div class="rounded-2xl bg-slate-50 p-5">
@@ -173,7 +176,7 @@
       </div>
 
       <div class="mt-6 grid gap-3">
-        @for (prop of product()?.moreProperties; track $index) {
+        @for (prop of product?.moreProperties; track $index) {
         <div class="grid gap-2 rounded-2xl bg-slate-50 p-4 sm:grid-cols-[180px_1fr]"><span
             class="text-sm font-bold text-slate-900">{{prop.label}}</span>
           <span class="text-sm text-slate-600">{{prop.value}}</span>
@@ -182,51 +185,7 @@
       </div>
     </div>
 
-    <div class="rounded-[32px] border border-slate-200 bg-white p-5 shadow-soft sm:p-7">
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 class="text-2xl font-black tracking-tight text-slate-950">Customer Reviews</h2>
-          <p class="mt-2 text-sm text-slate-500">Real feedback from verified buyers</p>
-        </div>
-        <button
-          class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700">Write a
-          Review</button>
-      </div>
-
-      <div class="mt-6 grid gap-4 lg:grid-cols-[220px_1fr]">
-        <div class="rounded-3xl bg-slate-50 p-5 text-center">
-          <p class="text-5xl font-black text-slate-950">4.9</p>
-          <p class="mt-2 text-lg text-amber-400">★★★★★</p>
-          <p class="mt-2 text-sm text-slate-500">Based on 124 reviews</p>
-        </div>
-
-        <div class="space-y-4">
-          <article class="rounded-3xl border border-slate-200 p-5">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h3 class="text-base font-bold text-slate-900">Emma Johnson</h3>
-                <p class="text-sm text-slate-500">Verified Buyer</p>
-              </div>
-              <div class="text-sm text-amber-400">★★★★★</div>
-            </div>
-            <p class="mt-4 text-sm leading-8 text-slate-600">Beautiful laptop, fast performance, and the battery life is
-              excellent. It feels premium and very light to carry every day.</p>
-          </article>
-
-          <article class="rounded-3xl border border-slate-200 p-5">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h3 class="text-base font-bold text-slate-900">Daniel Moore</h3>
-                <p class="text-sm text-slate-500">Verified Buyer</p>
-              </div>
-              <div class="text-sm text-amber-400">★★★★★</div>
-            </div>
-            <p class="mt-4 text-sm leading-8 text-slate-600">The display is sharp and the keyboard feels great. Perfect
-              choice for work, travel, and presentation-heavy days.</p>
-          </article>
-        </div>
-      </div>
-    </div>
+    <app-view-reviews [product]="product"/>
   </div>
 
   <aside class="space-y-6 xl:sticky xl:top-24 xl:self-start">
@@ -262,4 +221,5 @@
   </aside>
 </section>
 
-<app-recommended-products [category]="product()?.category" />
+<!-- <app-recommended-products [category]="product?.category" /> -->
+}

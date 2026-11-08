@@ -1,6 +1,6 @@
 <article class="grid gap-4 py-5 sm:grid-cols-[100px_minmax(0,1fr)] lg:grid-cols-[110px_minmax(0,1fr)_160px]">
-    <div class="rounded-[24px] bg-slate-50 p-5 text-center text-5xl" [routerLink]="'/product/' + item().product.id">
-        <img [src]="item().product.imageUrls[0]"
+    <div class="rounded-[24px] bg-slate-50 p-5 text-center text-5xl" style="height: fit-content;" [routerLink]="'/product/' + item().product.id">
+        <img [src]="item().product.imageUrls[0]" [style.view-transition-name]="'product-image-' + item().product.id"
             alt="">
     </div>
     <div>

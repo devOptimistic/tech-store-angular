@@ -18,8 +18,8 @@
                 <!-- Order number -->
                 <div class="text-center border-b border-gray-100 pb-5 mb-5">
                     <p class="text-gray-500 text-sm uppercase tracking-wide">Order Number</p>
-                    <p class="text-xl font-bold text-gray-800">#VLTX-38291</p>
-                    <p class="text-gray-500 text-sm mt-1">Placed on: April 26, 2026</p>
+                    <p class="text-xl font-bold text-gray-800">#{{store.lastOrder()?.number}}</p>
+                    <p class="text-gray-500 text-sm mt-1">Placed on: {{store.lastOrder()?.createdAt | date: 'longDate'}}</p>
                 </div>
 
                 <!-- Simple message -->
@@ -34,7 +34,7 @@
 
                 <!-- Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="orders.html" class="inline-flex justify-center items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition">
+                    <a routerLink="/orders" class="inline-flex justify-center items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition">
                         View My Orders
                     </a>
                     <a routerLink="/products/all" class="inline-flex justify-center items-center px-5 py-2.5 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-xl transition">

@@ -1,0 +1,7 @@
+<div class="rounded-3xl bg-slate-50 p-5 text-center" style="height: fit-content;">
+    <p class="text-5xl font-black text-slate-950">{{product().rating}}</p>
+    <p class="mt-2 text-lg text-amber-400">
+        <app-star-rating [rating]="product().rating"/>
+    </p>
+    <p class="mt-2 text-sm text-slate-500">Based on {{product().reviewCount}} reviews</p>
+</div>

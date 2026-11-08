@@ -1,0 +1,12 @@
+<div class="flex items-center">
+    <div class="flex items-center mx-auto">
+        @for (star of starArray(); track $index) {
+            <mat-icon class="!text-lg"
+                      [inline]="true"
+                      [class]="star? '!text-yellow-400' : '!text-gray-300'">star</mat-icon>
+        }
+    </div>
+    <span class="text-sm text-gray-500 ml-2">
+        <ng-content></ng-content>
+    </span>
+</div>

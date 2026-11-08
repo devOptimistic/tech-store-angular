@@ -1,0 +1,17 @@
+<article class="rounded-3xl border border-slate-200 p-5 mb-2">
+    <div class="flex flex-wrap items-start gap-3">
+        <img [src]="review().userImageUrl" [alt]="review().userName" class="w-10 h-10 rounded-full" />
+        <div>
+            <h3 class="text-base font-bold text-slate-900">{{review().userName}}</h3>
+            <div class="flex items-center mb-1">
+                <app-star-rating [rating]="review().rating" />
+                <div class="text-sm text-gray-500">{{review().reviewDate | date: 'MMM d, yyyy'}}</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="ml-12">
+        <!-- <p class="text-base font-semibold mb-1">{{review().title}}</p> -->
+        <p class="text-sm leading-6 text-slate-600">{{review().comment}}</p>
+    </div>
+</article>

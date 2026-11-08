@@ -3,6 +3,7 @@ import { Product } from '../../models/product';
 import { TitleCasePipe } from '@angular/common';
 import { ProductCard } from "../../components/product-card/product-card";
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { TechShopStore } from '../../tech-shop-store';
 
 @Component({
@@ -11,6 +12,7 @@ import { TechShopStore } from '../../tech-shop-store';
     TitleCasePipe,
     ProductCard,
     FormsModule,
+    RouterLink,
   ],
   templateUrl: './products-grid.html',
   styleUrl: './products-grid.scss',
@@ -18,12 +20,14 @@ import { TechShopStore } from '../../tech-shop-store';
 export default class ProductsGrid {
   store = inject(TechShopStore);
   category = input<string>('all');
+  q = input<string>();
   selectedPrice = signal<number | null>(null);
   selectedCategories = signal<string[]>([]);
   selectedSort = signal<number | null>(0);
   private applyFilters(products: Product[]): Product[] {
     let result = [...products];
 
+    result = this.filterBySearch(result);
     result = this.filterByMainCategory(result);
     result = this.filterBySelectedCategories(result);
     result = this.filterByMaxPrice(result);
@@ -33,6 +37,14 @@ export default class ProductsGrid {
   }
 
   filteredProducts = computed(() => this.applyFilters(this.store.products()));
+
+  private filterBySearch(products: Product[]): Product[] {
+    const q = this.q()?.trim().toLowerCase();
+    if (!q) return products;
+    return products.filter(p =>
+      [p.name, p.brand, p.category, p.shortDescription].some(v => v?.toLowerCase().includes(q))
+    );
+  }
 
   private filterByMainCategory(products: Product[]): Product[] {
     if (this.category() === 'all') return products;
