@@ -43,7 +43,9 @@ export class SignInDialog {
     }
 
     const { email, password } = this.signInForm.value as SignInParams;
-    this.store.signIn({ email, password, checkout: this.data?.checkout, dialogId: this.#dialogRef.id });
+    if (this.store.signIn({ email, password, checkout: this.data?.checkout })) {
+      this.#dialogRef.close();
+    }
   }
 
   openSignUpDialog() {

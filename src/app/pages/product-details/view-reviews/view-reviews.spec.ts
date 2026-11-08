@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PRODUCTS } from '../../../data/products.data';
 
 import { ViewReviews } from './view-reviews';
 
@@ -13,6 +14,8 @@ describe('ViewReviews', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(ViewReviews);
+
+    fixture.componentRef.setInput('product', PRODUCTS[0]);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

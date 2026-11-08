@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductDetails } from './product-details';
+
+import ProductDetails from './product-details';
 
 describe('ProductDetails', () => {
   let component: ProductDetails;
@@ -13,6 +14,8 @@ describe('ProductDetails', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(ProductDetails);
+
+    fixture.componentRef.setInput('id', 1);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

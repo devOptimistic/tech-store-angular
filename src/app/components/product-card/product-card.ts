@@ -15,6 +15,7 @@ export class ProductCard {
   product = input.required<Product>();
   store = inject(TechShopStore);
   isInWishlist = computed(()=> this.store.wishlistItems().find(p=> p.id === this.product().id));
+  isCompared = computed(() => this.store.compareIds().includes(this.product().id));
   finalPrice = computed(() => this.product()?.price! - (this.product()?.discount! / 100 * this.product()?.price!))
   
   toggleWishlist(product: Product){

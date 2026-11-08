@@ -36,6 +36,11 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/wishlist/wishlist')
     },
     {
+        path: 'compare',
+        title: 'Compare Products | Tech Role',
+        loadComponent: () => import('./pages/compare/compare')
+    },
+    {
         path: 'checkout',
         title: 'Checkout | Tech Role',
         canActivate: [checkoutGuard],

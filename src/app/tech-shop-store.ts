@@ -4,8 +4,7 @@ import { patchState, signalMethod, signalStore, withComputed, withMethods, withS
 import { produce } from "immer";
 import { Toaster } from "./services/toaster";
 import { CartItem } from "./models/cart";
-import { MatDialog } from '@angular/material/dialog';
-import { SignInDialog } from "./components/sign-in-dialog/sign-in-dialog";
+import { AuthDialog } from './services/auth-dialog';
 import { Address, SignInParams, SignUpParams, User } from "./models/user";
 import { PRODUCTS } from "./data/products.data";
 import { findPromoCode } from "./data/promo-codes";
@@ -13,6 +12,8 @@ import { avatarFor, createDemoAccount, DEMO_ACCOUNT, UserAccount } from "./data/
 import { Router } from "@angular/router";
 import { Order } from "./models/order";
 import { withStorageSync } from "@angular-architects/ngrx-toolkit"
+
+export const MAX_COMPARE = 3;
 
 export type TechShopState = {
     products: Product[];
@@ -26,6 +27,7 @@ export type TechShopState = {
     users: UserAccount[];
     orders: Order[];
     appliedPromo: string | undefined;
+    compareIds: number[];
     lastOrderId: string | undefined;
     loading: boolean,
     selectedProductId: number | undefined
@@ -66,13 +68,15 @@ export const TechShopStore = signalStore(
         users: [createDemoAccount()],
         orders: [],
         appliedPromo: undefined,
+        compareIds: [],
         lastOrderId: undefined,
         selectedShippingType: 1,
         loading: false,
         selectedProductId: undefined
     } as TechShopState),
-    withStorageSync({ key: 'tech-shop', select: ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo }) => ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo }) }),
-    withComputed(({ wishlistItems, cartItems, shippingTypes, selectedShippingType, selectedProductId, products, orders, user, lastOrderId }) => ({
+    withStorageSync({ key: 'tech-shop', select: ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo, compareIds }) => ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo, compareIds }) }),
+    withComputed(({ wishlistItems, cartItems, shippingTypes, selectedShippingType, selectedProductId, products, orders, user, lastOrderId, compareIds }) => ({
+        compareItems: computed(() => compareIds().map(id => products().find(p => p.id === id)).filter((p): p is Product => !!p)),
         userOrders: computed(() => orders().filter(o => o.userId === user()?.id).sort((a, b) => b.createdAt.localeCompare(a.createdAt))),
         lastOrder: computed(() => orders().find(o => o.id === lastOrderId())),
         wishlistItemsCount: computed(() => wishlistItems().length),
@@ -101,7 +105,7 @@ export const TechShopStore = signalStore(
             };
         }),
     })),
-    withMethods((store, toaster = inject(Toaster), matDialog = inject(MatDialog), router = inject(Router)) => ({
+    withMethods((store, toaster = inject(Toaster), authDialog = inject(AuthDialog), router = inject(Router)) => ({
         setProductId: signalMethod<number>((id: number) => {
             patchState(store, { selectedProductId: id });
         }),
@@ -165,18 +169,12 @@ export const TechShopStore = signalStore(
         },
         proceedToCheckout: () => {
             if (!store.user()) {
-                matDialog.open(SignInDialog, {
-                    disableClose: true,
-                    width: '450px',
-                    data: {
-                        checkout: true
-                    }
-                })
+                authDialog.openSignIn(true);
                 return;
             }
             router.navigate(['/checkout']);
         },
-        signIn: ({ email, password, checkout, dialogId }: SignInParams) => {
+        signIn: ({ email, password, checkout }: SignInParams): boolean => {
             const normalized = email.trim().toLowerCase();
             let account = store.users().find(u => u.email === normalized);
             // the demo account always works, even if localStorage was cleared or edited
@@ -186,24 +184,24 @@ export const TechShopStore = signalStore(
 
             if (!account || account.password !== password) {
                 toaster.error('Invalid email or password.');
-                return;
+                return false;
             }
 
             const { password: _password, ...user } = account;
             patchState(store, { user });
-            matDialog.getDialogById(dialogId)?.close();
             toaster.success(`Welcome back, ${user.name}!`);
 
             if (checkout) {
                 router.navigate(['/checkout']);
             }
+            return true;
         },
-        signUp: ({ email, password, name, checkout, dialogId }: SignUpParams) => {
+        signUp: ({ email, password, name, checkout }: SignUpParams): boolean => {
             const normalized = email.trim().toLowerCase();
             const exists = normalized === DEMO_ACCOUNT.email || store.users().some(u => u.email === normalized);
             if (exists) {
                 toaster.error('An account with this email already exists.');
-                return;
+                return false;
             }
 
             const account: UserAccount = {
@@ -216,12 +214,12 @@ export const TechShopStore = signalStore(
             };
             const { password: _password, ...user } = account;
             patchState(store, { users: [...store.users(), account], user });
-            matDialog.getDialogById(dialogId)?.close();
             toaster.success('Account created. Welcome!');
 
             if (checkout) {
                 router.navigate(['/checkout']);
             }
+            return true;
         },
         signOut: () => {
             const current = store.user();
@@ -268,6 +266,24 @@ export const TechShopStore = signalStore(
 
             patchState(store, { user: updatedUser });
             toaster.success('Main address updated.');
+        },
+        toggleCompare: (product: Product) => {
+            const ids = store.compareIds();
+            if (ids.includes(product.id)) {
+                patchState(store, { compareIds: ids.filter(id => id !== product.id) });
+                return;
+            }
+            if (ids.length >= MAX_COMPARE) {
+                toaster.warning(`You can compare up to ${MAX_COMPARE} products.`);
+                return;
+            }
+            patchState(store, { compareIds: [...ids, product.id] });
+        },
+        removeFromCompare: (productId: number) => {
+            patchState(store, { compareIds: store.compareIds().filter(id => id !== productId) });
+        },
+        clearCompare: () => {
+            patchState(store, { compareIds: [] });
         },
         applyPromo: (code: string) => {
             const promo = findPromoCode(code);

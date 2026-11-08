@@ -1,9 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TechShopStore } from '../../tech-shop-store';
-import { MatDialog } from '@angular/material/dialog';
-import { SignInDialog } from '../../components/sign-in-dialog/sign-in-dialog';
-import { SignUpDialog } from '../../components/sign-up-dialog/sign-up-dialog';
+import { AuthDialog } from '../../services/auth-dialog';
 import { MatIcon } from "@angular/material/icon";
 import { SearchBox } from '../../components/search-box/search-box';
 
@@ -19,21 +17,15 @@ export class Header {
     { title: 'Home', link: '', active: false },
     { title: 'Products', link: '/products/all', active: false }
   ]
-  dialog = inject(MatDialog);
+  authDialog = inject(AuthDialog);
   router = inject(Router);
   isMobileMenuOpen = signal(false);
 
   openSignInDialog() {
-    this.dialog.open(SignInDialog, {
-      disableClose: true,
-      width: '450px',
-    })
+    this.authDialog.openSignIn();
   }
   openSignUpDialog() {
-    this.dialog.open(SignUpDialog, {
-      disableClose: true,
-      width: '450px',
-    })
+    this.authDialog.openSignUp();
   }
   
   toggleMobileMenu() {
