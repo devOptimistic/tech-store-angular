@@ -233,6 +233,42 @@ describe('TechShopStore', () => {
     });
   });
 
+  describe('reviews', () => {
+    it('requires a signed-in user', () => {
+      const ok = store.addReview(product().id, { rating: 5, title: 'Great', comment: 'Love it' });
+
+      expect(ok).toBe(false);
+      expect(authDialog.openSignIn).toHaveBeenCalled();
+      expect(store.userReviews()).toEqual([]);
+    });
+
+    it('adds the review to the product and recomputes rating and count', () => {
+      signInAsDemo();
+      const before = product();
+      const sumBefore = before.rating * before.reviewCount;
+
+      expect(store.addReview(before.id, { rating: 5, title: ' Great ', comment: ' Love it ' })).toBe(true);
+
+      const after = store.products().find(p => p.id === before.id)!;
+      expect(after.reviewCount).toBe(before.reviewCount + 1);
+      expect(after.reviews.length).toBe(before.reviews.length + 1);
+      expect(after.rating).toBeCloseTo((sumBefore + 5) / (before.reviewCount + 1), 1);
+
+      const mine = after.reviews[after.reviews.length - 1];
+      expect(mine.title).toBe('Great');
+      expect(mine.userName).toBe(DEMO_ACCOUNT.name);
+      expect(mine.reviewDate).toBeInstanceOf(Date);
+    });
+
+    it('does not touch other products', () => {
+      signInAsDemo();
+      store.addReview(product().id, { rating: 1, title: 'Meh', comment: 'Not great' });
+
+      const other = store.products()[1];
+      expect(other).toBe(store.baseProducts()[1]);
+    });
+  });
+
   describe('wishlist', () => {
     it('adds and removes products', () => {
       store.addToWishlist(product());

@@ -11,12 +11,14 @@ import { findPromoCode } from "./data/promo-codes";
 import { avatarFor, createDemoAccount, DEMO_ACCOUNT, UserAccount } from "./data/demo-account";
 import { Router } from "@angular/router";
 import { Order } from "./models/order";
+import { UserReview } from "./models/user-review";
 import { withStorageSync } from "@angular-architects/ngrx-toolkit"
 
 export const MAX_COMPARE = 3;
 
 export type TechShopState = {
-    products: Product[];
+    baseProducts: Product[];
+    userReviews: UserReview[];
     categories: string[];
     sortTypes: { label: string, value: number }[];
     shippingTypes: { id: number, label: string, description: string, cost: number }[],
@@ -38,7 +40,8 @@ export const TechShopStore = signalStore(
         providedIn: 'root',
     },
     withState({
-        products: PRODUCTS,
+        baseProducts: PRODUCTS,
+        userReviews: [],
         categories: [
             'Smartphones',
             'Laptops',
@@ -74,7 +77,23 @@ export const TechShopStore = signalStore(
         loading: false,
         selectedProductId: undefined
     } as TechShopState),
-    withStorageSync({ key: 'tech-shop', select: ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo, compareIds }) => ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo, compareIds }) }),
+    withStorageSync({ key: 'tech-shop', select: ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo, compareIds, userReviews }) => ({ wishlistItems, cartItems, user, users, orders, lastOrderId, appliedPromo, compareIds, userReviews }) }),
+    // the catalog plus any reviews written by users (rating and review count are recomputed)
+    withComputed(({ baseProducts, userReviews }) => ({
+        products: computed(() => {
+            const added = userReviews();
+            if (!added.length) return baseProducts();
+            return baseProducts().map(p => {
+                const mine = added
+                    .filter(r => r.productId === String(p.id))
+                    .map(r => ({ ...r, reviewDate: new Date(r.reviewDate) }));
+                if (!mine.length) return p;
+                const count = p.reviewCount + mine.length;
+                const rating = (p.rating * p.reviewCount + mine.reduce((acc, r) => acc + r.rating, 0)) / count;
+                return { ...p, reviews: [...p.reviews, ...mine], reviewCount: count, rating: Math.round(rating * 10) / 10 };
+            });
+        }),
+    })),
     withComputed(({ wishlistItems, cartItems, shippingTypes, selectedShippingType, selectedProductId, products, orders, user, lastOrderId, compareIds }) => ({
         compareItems: computed(() => compareIds().map(id => products().find(p => p.id === id)).filter((p): p is Product => !!p)),
         userOrders: computed(() => orders().filter(o => o.userId === user()?.id).sort((a, b) => b.createdAt.localeCompare(a.createdAt))),
@@ -266,6 +285,26 @@ export const TechShopStore = signalStore(
 
             patchState(store, { user: updatedUser });
             toaster.success('Main address updated.');
+        },
+        addReview: (productId: number, data: { rating: number; title: string; comment: string }): boolean => {
+            const user = store.user();
+            if (!user) {
+                authDialog.openSignIn();
+                return false;
+            }
+            const review: UserReview = {
+                id: crypto.randomUUID(),
+                productId: String(productId),
+                userName: user.name,
+                userImageUrl: user.imageUrl,
+                rating: data.rating,
+                title: data.title.trim(),
+                comment: data.comment.trim(),
+                reviewDate: new Date(),
+            };
+            patchState(store, { userReviews: [...store.userReviews(), review] });
+            toaster.success('Thanks for your review!');
+            return true;
         },
         toggleCompare: (product: Product) => {
             const ids = store.compareIds();

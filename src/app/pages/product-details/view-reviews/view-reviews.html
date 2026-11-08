@@ -4,10 +4,58 @@
             <h2 class="text-2xl font-black tracking-tight text-slate-950">Customer Reviews</h2>
             <p class="mt-2 text-sm text-slate-500">Real feedback from verified buyers</p>
         </div>
-        <button
-            class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700">Write a
+        @if (!showForm()) {
+        <button type="button" (click)="openForm()"
+            class="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">Write a
             Review</button>
+        }
     </div>
+
+    @if (showForm()) {
+    <form (submit)="$event.preventDefault(); submit()" class="mt-6 space-y-4 rounded-3xl border border-slate-200 bg-slate-50 p-5">
+        <div>
+            <p class="text-sm font-semibold text-slate-700">Your rating</p>
+            <div class="mt-2 flex gap-1" role="radiogroup" aria-label="Your rating">
+                @for (star of stars; track star) {
+                <button type="button" role="radio" [attr.aria-checked]="rating() === star" [attr.aria-label]="star + ' stars'"
+                    (click)="rating.set(star)"
+                    class="cursor-pointer text-3xl leading-none transition"
+                    [class]="star <= rating() ? 'text-amber-400' : 'text-slate-300 hover:text-amber-300'">★</button>
+                }
+            </div>
+            @if (submitted() && rating() === 0) {
+            <p class="mt-1 text-xs text-red-600">Please choose a rating.</p>
+            }
+        </div>
+
+        <div>
+            <label class="mb-2 block text-sm font-semibold text-slate-700" for="review-title">Title</label>
+            <input id="review-title" type="text" maxlength="80" [value]="title()" (input)="title.set($any($event.target).value)"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                placeholder="Sum it up in a few words" />
+            @if (submitted() && !title().trim()) {
+            <p class="mt-1 text-xs text-red-600">Please add a title.</p>
+            }
+        </div>
+
+        <div>
+            <label class="mb-2 block text-sm font-semibold text-slate-700" for="review-comment">Your review</label>
+            <textarea id="review-comment" rows="4" maxlength="1000" [value]="comment()" (input)="comment.set($any($event.target).value)"
+                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                placeholder="What did you like or dislike?"></textarea>
+            @if (submitted() && !comment().trim()) {
+            <p class="mt-1 text-xs text-red-600">Please write a review.</p>
+            }
+        </div>
+
+        <div class="flex justify-end gap-3">
+            <button type="button" (click)="cancel()"
+                class="cursor-pointer rounded-2xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
+            <button type="submit"
+                class="cursor-pointer rounded-2xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">Submit Review</button>
+        </div>
+    </form>
+    }
 
     <div class="mt-6 grid gap-4 lg:grid-cols-[220px_1fr]">
         <app-rating-summary [product]="product()" />
@@ -15,6 +63,8 @@
         <div class="space-y-4">
             @for (review of sortedReviews(); track review.id) {
                 <app-view-review-item [review]="review"/>
+            } @empty {
+                <p class="rounded-2xl bg-slate-50 p-5 text-sm text-slate-500">No reviews yet. Be the first to review this product.</p>
             }
         </div>
     </div>
