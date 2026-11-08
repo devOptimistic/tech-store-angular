@@ -11,6 +11,18 @@
         <p class="text-sm text-slate-500 mt-1">Welcome back! Sign in to your account</p>
     </div>
 
+    <!-- Demo account hint -->
+    <div class="mb-4 rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-slate-700">
+        <p class="font-bold text-blue-700">Trying the demo?</p>
+        <p class="mt-1">Sign in with the demo account:</p>
+        <p class="mt-1">Email: <code class="font-semibold text-slate-900">{{demo.email}}</code></p>
+        <p>Password: <code class="font-semibold text-slate-900">{{demo.password}}</code></p>
+        <button type="button" (click)="useDemoAccount()"
+            class="cursor-pointer mt-3 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white transition hover:bg-blue-700">
+            Fill in demo credentials
+        </button>
+    </div>
+
     <!-- Login Card -->
     <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-card border border-slate-100 p-8">
         <form [formGroup]="signInForm" (ngSubmit)="signIn()">
@@ -20,7 +32,7 @@
                 <input formControlName="email" 
                 type="email"
                     class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
-                    placeholder="Mohammad@test.com" />
+                    placeholder="you@example.com" />
             </div>
 
             <!-- Password Field -->

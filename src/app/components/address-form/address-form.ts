@@ -35,7 +35,6 @@ export class AddressForm {
     }
     const data: Address = { id: this.getRandomInt(2,1000), isMain: false, ...this.addressForm.getRawValue() };
     this.store.addAddress(data);
-        console.log('addAddress called with:', data);
 
     // this.requestCancel.emit();
   }

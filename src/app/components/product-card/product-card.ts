@@ -22,7 +22,6 @@ export class ProductCard {
       this.store.removeFromWishlist(product);
     }else{
       this.store.addToWishlist(product)
-      console.log(this.store.wishlistItems());
       
     }
   }

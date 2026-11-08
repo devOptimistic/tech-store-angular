@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogClose, MatDialogRef } from '@angul
 import { TechShopStore } from '../../tech-shop-store';
 import { SignInParams } from '../../models/user';
 import { SignUpDialog } from '../sign-up-dialog/sign-up-dialog';
+import { DEMO_ACCOUNT } from '../../data/demo-account';
 
 @Component({
   selector: 'app-sign-in-dialog',
@@ -25,9 +26,15 @@ export class SignInDialog {
   dialog = inject(MatDialog);
 
   signInForm = this.fb.group({
-    email: ['Mohammad@test.com', Validators.required],
-    password: ['test123', Validators.required]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required]
   })
+
+  demo = DEMO_ACCOUNT;
+
+  useDemoAccount() {
+    this.signInForm.setValue({ email: DEMO_ACCOUNT.email, password: DEMO_ACCOUNT.password });
+  }
 
   signIn() {
     if (!this.signInForm.valid) {

@@ -45,6 +45,15 @@ ng serve
 Navigate to http://localhost:4200/. The application will automatically reload if you change any source files.
 ```
 
+## 🔑 Demo Account
+There is no backend: accounts are stored in the browser's `localStorage`. To try the app, sign in with:
+
+| Email | Password |
+| --- | --- |
+| `demo@techstore.com` | `demo1234` |
+
+The sign-in dialog also shows these credentials with a one-click "Fill in demo credentials" button. You can create your own account with Sign Up as well.
+
 ## 🔧 Tech Stack
 - Framework: Angular 21
 - State Management: NgRx Signals

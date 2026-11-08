@@ -24,13 +24,18 @@ export class SignUpDialog {
 
   signUpForm = this.fb.group({
     name: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', Validators.required]
   })
 
+  passwordsMismatch() {
+    const { password, confirmPassword } = this.signUpForm.getRawValue();
+    return !!confirmPassword && password !== confirmPassword;
+  }
+
   signUp() {
-    if (!this.signUpForm.valid) {
+    if (!this.signUpForm.valid || this.passwordsMismatch()) {
       this.signUpForm.markAllAsTouched();
       return;
     }
