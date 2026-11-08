@@ -1,59 +1,74 @@
-# TechStoreAngular
+# 🛍️ Digital Products Store
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+[![Angular](https://img.shields.io/badge/Angular-21-red.svg)](https://angular.io/)
+[![NgRx](https://img.shields.io/badge/NgRx-Signals-purple.svg)](https://ngrx.io/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-blue.svg)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## Development server
+## 📖 Overview
 
-To start a local development server, run:
+A modern, high-performance e-commerce platform for selling digital products, built with the latest Angular ecosystem technologies. This project demonstrates best practices for state management using NgRx Signals and utility-first styling with TailwindCSS.
+
+## ✨ Key Features
+
+- 🚀 **Angular 21** with cutting-edge Signal-based architecture
+- 📦 **NgRx Signals** - Reactive state management without boilerplate
+- 🎨 **TailwindCSS** - Rapid UI development with utility classes
+- 💳 **Smart Shopping Cart** - Real-time calculations and updates
+- 📱 **Fully Responsive** - Optimized for all screen sizes
+- ⚡ **Lazy Loading** - Optimized bundle size and performance
+- 🔍 **Product Filtering** - Search, filter, and sort capabilities
+- 🎯 **Type-safe** - Full TypeScript implementation
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm or yarn package manager
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/devOptimistic/tech-store-angular.git
+
+# Navigate to project directory
+cd tech-store-angular
+
+# Install dependencies
+npm install
+
+# Start development server
 ng serve
+
+Navigate to http://localhost:4200/. The application will automatically reload if you change any source files.
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🔧 Tech Stack
+- Framework: Angular 21
+- State Management: NgRx Signals
+- Styling: TailwindCSS
+- Language: TypeScript 5.0+
+- Build Tool: Angular CLI
+- Package Manager: npm/yarn/pnpm
 
-## Code scaffolding
+## 🤝 Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository
+2. Create your feature branch (git checkout -b feature/AmazingFeature)
+3. Commit your changes (git commit -m 'Add some AmazingFeature')
+4. Push to the branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🙏 Acknowledgments
+- Angular Team for amazing framework updates
+- NgRx Team for signal store implementation
+- TailwindCSS for utility-first CSS
 
-```bash
-ng generate component component-name
-```
+## 📧 Contact
+Mohammad Javad Bayatani - mohammad.bayatani.dev@gmail.com
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Project Link: https://github.com/devOptimistic/tech-store-angular
 
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+⭐️ Don't forget to star this project if it helped you!
