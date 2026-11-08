@@ -13,19 +13,19 @@
         <div>
           <h3 class="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Shop</h3>
           <ul class="mt-4 space-y-3 text-sm text-slate-500">
-            <li><a href="#" class="hover:text-blue-600">Laptops</a></li>
-            <li><a href="#" class="hover:text-blue-600">Smartphones</a></li>
-            <li><a href="#" class="hover:text-blue-600">Headphones</a></li>
-            <li><a href="#" class="hover:text-blue-600">Accessories</a></li>
+            <li><a routerLink="/products/Laptops" class="hover:text-blue-600">Laptops</a></li>
+            <li><a routerLink="/products/Smartphones" class="hover:text-blue-600">Smartphones</a></li>
+            <li><a routerLink="/products/Headphones" class="hover:text-blue-600">Headphones</a></li>
+            <li><a routerLink="/products/Accessories" class="hover:text-blue-600">Accessories</a></li>
           </ul>
         </div>
         <div>
-          <h3 class="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Support</h3>
+          <h3 class="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Account</h3>
           <ul class="mt-4 space-y-3 text-sm text-slate-500">
-            <li><a href="#" class="hover:text-blue-600">Order Tracking</a></li>
-            <li><a href="#" class="hover:text-blue-600">Returns</a></li>
-            <li><a href="#" class="hover:text-blue-600">Warranty</a></li>
-            <li><a href="#" class="hover:text-blue-600">Help Center</a></li>
+            <li><a routerLink="/orders" class="hover:text-blue-600">My Orders</a></li>
+            <li><a routerLink="/profile" class="hover:text-blue-600">My Profile</a></li>
+            <li><a routerLink="/wishlist" class="hover:text-blue-600">Wishlist</a></li>
+            <li><a routerLink="/compare" class="hover:text-blue-600">Compare Products</a></li>
           </ul>
         </div>
         <div>
@@ -39,12 +39,8 @@
       </div>
       <div class="border-t border-slate-200">
         <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <p>© 2026 Tech Role. All rights reserved.</p>
-          <div class="flex flex-wrap gap-4">
-            <a href="#" class="hover:text-blue-600">Privacy Policy</a>
-            <a href="#" class="hover:text-blue-600">Terms</a>
-            <a href="#" class="hover:text-blue-600">Sitemap</a>
-          </div>
+          <p>© {{year}} Tech Role. All rights reserved.</p>
+          <p>A demo store built with Angular.</p>
         </div>
       </div>
     </footer>

@@ -15,9 +15,17 @@ export class ProductCard {
   product = input.required<Product>();
   store = inject(TechShopStore);
   isInWishlist = computed(()=> this.store.wishlistItems().find(p=> p.id === this.product().id));
+  // The same product can appear in several cards on one page (e.g. home), and a
+  // view-transition-name must be unique, so only the clicked card gets one.
+  transitionActive = signal(false);
   isCompared = computed(() => this.store.compareIds().includes(this.product().id));
   finalPrice = computed(() => this.product()?.price! - (this.product()?.discount! / 100 * this.product()?.price!))
   
+  markTransition() {
+    this.transitionActive.set(true);
+    setTimeout(() => this.transitionActive.set(false), 1000);
+  }
+
   toggleWishlist(product: Product){
     if (this.isInWishlist()){
       this.store.removeFromWishlist(product);

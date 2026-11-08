@@ -23,4 +23,14 @@ describe('ProductCard', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('only sets a view-transition-name on the card that was clicked', async () => {
+    const img = (fixture.nativeElement as HTMLElement).querySelector('img')!;
+    expect(img.style.getPropertyValue('view-transition-name')).toBe('');
+
+    component.markTransition();
+    fixture.detectChanges();
+
+    expect(img.style.getPropertyValue('view-transition-name')).toBe('product-image-' + PRODUCTS[0].id);
+  });
 });

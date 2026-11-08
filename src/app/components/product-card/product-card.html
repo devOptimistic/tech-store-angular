@@ -10,12 +10,12 @@
         </svg>
     </button>
     <div class="rounded-[24px] bg-slate-50 p-7 text-center text-6xl cursor-pointer"
-        [routerLink]="['/product',  product().id]">
+        [routerLink]="['/product',  product().id]" (click)="markTransition()">
         <!-- <img [src]="product()?.imageUrls![0]" alt=""> -->
-        <img [src]="product().imageUrls[0]" alt="" [style.view-transition-name]="'product-image-' + product().id"/>
+        <img [src]="product().imageUrls[0]" alt="" [style.view-transition-name]="transitionActive() ? 'product-image-' + product().id : null"/>
     </div>                                         
     <div class="mt-5 flex items-start justify-between gap-3">
-        <div class="cursor-pointer" [routerLink]="'/product/' + product().id">
+        <div class="cursor-pointer" [routerLink]="'/product/' + product().id" (click)="markTransition()">
             <h3 class="text-lg font-bold text-slate-900">{{product().name}}</h3>
             <p class="mt-1 text-sm text-slate-500">{{product().shortDescription}}</p>
         </div>
